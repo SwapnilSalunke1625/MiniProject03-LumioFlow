@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
     },
     userType: {
       type: String,
-      enum: ["residential", "commercial", "business"],
+      enum: ["Residential", "Commercial", "Business"],
       required: true,
     },
     preferredNotification: {

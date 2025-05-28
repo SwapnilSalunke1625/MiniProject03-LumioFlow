@@ -23,19 +23,19 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 import { ApiError } from "../utils/ApiError.js"
 import {User} from "../models/User.model.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
+import bcrypt from "bcrypt"
 
 
 
 
 const registerUser=asyncHandler(async (req, res)=>{ 
 
-    const { fullName, email, phone, country, state, city, userType, preferredNotification, password}=req.body 
-    console.log("email", email);
-    console.log("pass is", password)
 
-    // if(fullName===""){
-    //   throw new ApiError(400, "fullname is required")
-    // }
+  // step 01: getting data from frontend
+
+    const { fullName, email, phone, country, state, city, userType, preferredNotification, password}=req.body 
+    console.log(" Incoming Registration Request:", req.body);
+    
 
     // step 02: validations
 
@@ -47,13 +47,17 @@ const registerUser=asyncHandler(async (req, res)=>{
 
     // step 03: user exist or not check
 
-    const existedUser=User.findOne({
-      $or:[{email}]
+    const existedUser=await User.findOne({
+      $or:[{email},{phone}]
 
     })
     if(existedUser){
+      console.warn("Email or phone is already exists:", email, phone);
       throw new ApiError(409, "email is already exist")
     }
+
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
 
     // databaase entry
@@ -65,17 +69,23 @@ const registerUser=asyncHandler(async (req, res)=>{
       state,
       city,
       userType,
-      preferredNotification      
+      preferredNotification,
+      password:hashedPassword      
     })
+
     const createdUser=await User.findById(user._id).select(
       "-password -refreshToken"   // this is for not taking into db
     )
+  
 
     if(!createdUser){
+      console.error(" User creation failed in DB");
       throw new ApiError(500, "something went wrong while registration user")
     }
 
-    // 
+     console.log("User created successfully:", createdUser);
+
+    // final step : return response
     return res.status(201).json(
       new ApiResponse(200, createdUser, "User registered successfully !!!")
     )
