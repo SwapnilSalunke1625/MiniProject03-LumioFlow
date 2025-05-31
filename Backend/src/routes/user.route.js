@@ -1,8 +1,20 @@
-import {Router} from "express"
-import { registerUser } from "../controllers/user.controller.js"
+import { Router } from "express";
+import { registerUser, LoginUser, LogOutUser } from "../controllers/user.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
-const router=Router()
+const router = Router();
 
-router.route("/signup").post(registerUser)
+// Signup route
+router.route("/signup").post(registerUser);
 
-export default router
+// Signin (login) route
+router.route("/signin").post(LoginUser);
+
+
+
+
+// secured routes
+
+router.route("/logout").post(verifyJWT, LogOutUser)
+
+export default router;

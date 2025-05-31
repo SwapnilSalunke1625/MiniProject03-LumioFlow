@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
     },
     userType: {
       type: String,
-      enum: ["Residential", "Commercial", "Business"],
+      enum: ["Residential", "Commercial", "Industrial"],
       required: true,
     },
     preferredNotification: {
@@ -56,7 +56,8 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Hash password before saving
+// make Hash password before saving because of security 
+
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);

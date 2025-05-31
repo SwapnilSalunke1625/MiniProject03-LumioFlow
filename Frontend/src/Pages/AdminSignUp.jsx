@@ -7,8 +7,7 @@ export default function AdminSignUp() {
   // rounting purpose
   const navigate = useNavigate();
 
-
-  // usestate hook for taking data 
+  // usestate hook for taking data
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -19,12 +18,11 @@ export default function AdminSignUp() {
     userType: "",
     password: "",
     confirmPassword: "",
-    notifications: {
+    preferredNotification: {
       whatsappnotify: false,
       emailnotify: false,
     },
   });
-
 
   // handling changes while taking inputs
   const handleChange = (e) => {
@@ -33,20 +31,18 @@ export default function AdminSignUp() {
     if (name === "whatsappnotify" || name === "emailnotify") {
       setFormData((prev) => ({
         ...prev,
-        notifications: {
-          ...prev.notifications,
+        preferredNotification: {
+          ...prev.preferredNotification,
           [name]: checked,
         },
       }));
-
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-
   // handling submit form
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
 
   if (formData.password !== formData.confirmPassword) {
@@ -54,20 +50,27 @@ export default function AdminSignUp() {
     return;
   }
 
+  // Convert preferredNotification object to array
+  const selectedNotifications = [];
+  if (formData.preferredNotification.whatsappnotify) {
+    selectedNotifications.push("whatsapp");
+  }
+  if (formData.preferredNotification.emailnotify) {
+    selectedNotifications.push("email");
+  }
+
   try {
-    // Add current date as ISO string before sending
     const dataToSend = {
       ...formData,
-      signupDate: new Date().toISOString(),  // add this date field
+      preferredNotification: selectedNotifications, // ✅ this is now an array of strings
+      signupDate: new Date().toISOString(),
     };
 
     const res = await axios.post("/api/v1/users/signup", dataToSend);
     console.log("Signup Success:", res.data);
 
-    // routing when user get registerd
     navigate("/signin");
 
-    // Optionally clear form after success
     setFormData({
       fullName: "",
       email: "",
@@ -78,13 +81,11 @@ export default function AdminSignUp() {
       userType: "",
       password: "",
       confirmPassword: "",
-      notifications: {
+      preferredNotification: {
         whatsappnotify: false,
         emailnotify: false,
       },
     });
-
-  //  if get errors while signup error messages
   } catch (err) {
     console.error("Signup Error:", err.response?.data || err.message);
     alert("Signup failed. Please try again.");
@@ -96,10 +97,10 @@ export default function AdminSignUp() {
     <div className="flex justify-center items-center min-h-screen w-screen bg-gray-100">
       <div className="bg-gray-200 w-[430px] h-[570px] rounded-xl shadow-lg">
         <h2 className="text-4xl font-bold text-center my-4">Sign Up</h2>
-        
+
         <form
           className="flex justify-center items-center flex-col gap-3"
-          onSubmit={handleSubmit}  /* <-- Correct usage here */
+          onSubmit={handleSubmit} /* <-- Correct usage here */
         >
           <input
             type="text"
@@ -200,7 +201,7 @@ export default function AdminSignUp() {
               <input
                 type="checkbox"
                 name="whatsappnotify"
-                checked={formData.notifications.whatsappnotify}
+                checked={formData.preferredNotification.whatsappnotify}
                 onChange={handleChange}
                 className="mr-1"
               />
@@ -210,7 +211,7 @@ export default function AdminSignUp() {
               <input
                 type="checkbox"
                 name="emailnotify"
-                checked={formData.notifications.emailnotify}
+                checked={formData.preferredNotification.emailnotify}
                 onChange={handleChange}
                 className="mr-1"
               />

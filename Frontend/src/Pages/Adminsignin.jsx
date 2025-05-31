@@ -1,8 +1,36 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import logo from '../assets/icons/logo.png'; // Update this path if your logo is somewhere else
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import logo from '../assets/icons/logo.png'; 
+import axios from "axios";
 
 function Adminsignin() {
+  const [email, setEmail] = useState("");       // controlled email input
+  const [password, setPassword] = useState(""); // controlled password input
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("/api/v1/users/signin", {
+        email,
+        password,
+      });
+
+      // Get token and user data from response
+      const { token, user } = response.data.data;
+
+      // Save token and user to localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Redirect to dashboard after successful login
+      navigate("/");
+    } catch (error) {
+      alert(error.response?.data?.message || "Login failed");
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-8">
@@ -13,16 +41,18 @@ function Adminsignin() {
         </div>
 
         {/* Form */}
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-              Username:
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email:
             </label>
             <input
-              type="text"
-              id="username"
-              name="username"
+              type="email"
+              id="email"
+              name="email"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
@@ -36,6 +66,8 @@ function Adminsignin() {
               id="password"
               name="password"
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
