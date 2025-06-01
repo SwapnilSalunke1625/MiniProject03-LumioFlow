@@ -27,10 +27,9 @@ export default function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/energy-management" element={<EnergyManagement />} />
         <Route path="/resources" element={<Resources />} />
-        <Route path="/about" element={<About />} />
-        
+        <Route path="/about" element={<About />} />        
       </Routes>
-      <footer/>
+      <Footer/>
     </BrowserRouter>
   )
 }

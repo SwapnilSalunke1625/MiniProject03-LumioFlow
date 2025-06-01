@@ -1,4 +1,6 @@
 import React from 'react'
+import logo from "../assets/icons/logo.png"
+import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
@@ -7,18 +9,18 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex flex-col items-center md:items-start">
             <img src={logo} alt="Logo" className="w-24 h-auto mb-2" />
-            <span className="text-lg font-semibold">Emporia Energy</span>
+            <span className="text-lg font-semibold">Lumio FLow</span>
             <span className="text-sm text-gray-400 mt-1">Empowering your home, empowering your future.</span>
           </div>
           <div className="flex flex-col md:flex-row gap-8 text-center md:text-left">
             <div>
-              <h3 className="font-bold mb-2">Products</h3>
+              {/* <h3 className="font-bold mb-2">Products</h3>
               <ul className="space-y-1 text-gray-300">
                 <li><Link to="/products" className="hover:text-green-400 transition">EV Charger</Link></li>
                 <li><Link to="/products" className="hover:text-green-400 transition">Energy Monitor</Link></li>
                 <li><Link to="/products" className="hover:text-green-400 transition">Smart Plug</Link></li>
                 <li><Link to="/products" className="hover:text-green-400 transition">Home Battery</Link></li>
-              </ul>
+              </ul> */}
             </div>
             <div>
               <h3 className="font-bold mb-2">Company</h3>
