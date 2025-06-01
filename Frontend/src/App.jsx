@@ -11,6 +11,7 @@ import Resources from "./Pages/Resources"
 import About from "./Pages/About"
 import Layout from './Components/Layout';
 import Navbar from './Components/Navbar';
+import Footer from './Components/Footer';
 
 
 
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/about" element={<About />} />
         
       </Routes>
+      <footer/>
     </BrowserRouter>
   )
 }
