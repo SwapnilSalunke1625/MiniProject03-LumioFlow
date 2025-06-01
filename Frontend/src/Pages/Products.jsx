@@ -121,47 +121,7 @@ const Products = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-black text-white py-10 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex flex-col items-center md:items-start">
-            <img src={logo} alt="Logo" className="w-24 h-auto mb-2" />
-            <span className="text-lg font-semibold">Emporia Energy</span>
-            <span className="text-sm text-gray-400 mt-1">Empowering your home, empowering your future.</span>
-          </div>
-          <div className="flex flex-col md:flex-row gap-8 text-center md:text-left">
-            <div>
-              <h3 className="font-bold mb-2">Products</h3>
-              <ul className="space-y-1 text-gray-300">
-                <li>EV Charger</li>
-                <li>Energy Monitor</li>
-                <li>Smart Plug</li>
-                <li>Home Battery</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-2">Company</h3>
-              <ul className="space-y-1 text-gray-300">
-                <li>About Us</li>
-                <li>Careers</li>
-                <li>Blog</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-2">Support</h3>
-              <ul className="space-y-1 text-gray-300">
-                <li>Help Center</li>
-                <li>FAQs</li>
-                <li>Warranty</li>
-                <li>Returns</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div className="text-center text-gray-500 text-xs mt-8">
-          &copy; {new Date().getFullYear()} Emporia Energy. All rights reserved.
-        </div>
-      </footer>
+      
     </div>
   );
 };
