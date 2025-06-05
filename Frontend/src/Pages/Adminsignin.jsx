@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import logo from '../assets/icons/logo.png';
+import LoadingSpinner from '../Components/LoadingSpinner';
 
 const AdminSignIn = () => {
   const navigate = useNavigate();
@@ -9,23 +10,56 @@ const AdminSignIn = () => {
     email: '',
     password: ''
   });
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await fetch('/api/v1/users/signin', {
+      const response = await fetch('http://localhost:5000/api/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -36,166 +70,146 @@ const AdminSignIn = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Sign in failed');
+        throw new Error(data.message || 'Login failed');
       }
 
-      navigate('/dashboard');
+      // Store the token
+      localStorage.setItem('adminToken', data.token);
+      
+      // Navigate to dashboard
+      navigate('/admin/dashboard');
     } catch (err) {
-      setError(err.message);
+      setErrors({ submit: err.message });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
       {/* Animated Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black opacity-50"></div>
-        <div className="absolute inset-0">
-          {[...Array(10)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-green-500 rounded-full"
-              initial={{
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                scale: Math.random() * 2 + 1
-              }}
-              animate={{
-                y: [null, Math.random() * window.innerHeight],
-                opacity: [0.2, 0.8, 0.2]
-              }}
-              transition={{
-                duration: Math.random() * 3 + 2,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            />
-          ))}
-        </div>
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-90" />
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-green-500 rounded-full"
+            initial={{
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+              scale: Math.random() * 2 + 1
+            }}
+            animate={{
+              y: [null, Math.random() * window.innerHeight],
+              opacity: [0.2, 0.8, 0.2]
+            }}
+            transition={{
+              duration: Math.random() * 3 + 2,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        ))}
       </div>
 
-      <div className="max-w-md w-full mx-4 relative z-10">
-        <motion.div 
-          className="text-center mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Link to="/">
-            <motion.img 
-              src={logo} 
-              alt="Logo" 
-              className="w-24 h-auto mx-auto mb-6"
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.2 }}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
+      >
+        <div className="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-gray-700/50">
+          <div className="text-center mb-8">
+            <motion.img
+              src={logo}
+              alt="LumioFlow Logo"
+              className="h-16 mx-auto mb-4"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5 }}
             />
-          </Link>
-          <motion.h1 
-            className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            Welcome Back
-          </motion.h1>
-          <motion.p 
-            className="text-gray-400 mt-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            Sign in to access your dashboard
-          </motion.p>
-        </motion.div>
+            <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+              Admin Sign In
+            </h2>
+          </div>
 
-        <motion.form 
-          onSubmit={handleSubmit} 
-          className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-green-500/20"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          {error && (
-            <motion.div 
-              className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-xl mb-6"
+          {errors.submit && (
+            <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm"
             >
-              {error}
+              {errors.submit}
             </motion.div>
           )}
 
-          <div className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-300">
-                Email Address
+              <label className="block text-gray-300 text-sm font-medium mb-2">
+                Email
               </label>
-              <motion.input
+              <input
                 type="email"
-                id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                required
-                className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all duration-300"
+                className={`w-full px-4 py-3 bg-gray-900/50 border ${
+                  errors.email ? 'border-red-500' : 'border-gray-700'
+                } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 text-white placeholder-gray-500`}
                 placeholder="Enter your email"
-                whileFocus={{ scale: 1.02 }}
               />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-400">{errors.email}</p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2 text-gray-300">
+              <label className="block text-gray-300 text-sm font-medium mb-2">
                 Password
               </label>
-              <motion.input
+              <input
                 type="password"
-                id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                required
-                className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all duration-300"
+                className={`w-full px-4 py-3 bg-gray-900/50 border ${
+                  errors.password ? 'border-red-500' : 'border-gray-700'
+                } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 text-white placeholder-gray-500`}
                 placeholder="Enter your password"
-                whileFocus={{ scale: 1.02 }}
               />
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-400">{errors.password}</p>
+              )}
             </div>
 
             <motion.button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-green-500/25 transform hover:scale-[1.02]"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 px-4 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-medium hover:from-green-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
+                <div className="flex items-center justify-center">
+                  <LoadingSpinner size="sm" color="white" className="mr-2" />
                   Signing in...
-                </span>
+                </div>
               ) : (
                 'Sign In'
               )}
             </motion.button>
-          </div>
+          </form>
 
-          <div className="mt-8 text-center">
+          <div className="mt-6 text-center">
             <p className="text-gray-400">
               Don't have an account?{' '}
-              <Link 
-                to="/signup" 
-                className="text-green-500 hover:text-green-400 font-medium transition-colors duration-300"
-              >
+              <Link to="/signup" className="text-green-400 hover:text-green-300 transition-colors">
                 Sign Up
               </Link>
             </p>
           </div>
-        </motion.form>
-      </div>
+        </div>
+      </motion.div>
     </div>
   );
 };
