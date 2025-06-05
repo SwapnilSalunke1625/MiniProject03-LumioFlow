@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from "./assests/icons/logo.png";
+import logo from "../assets/icons/logo.png";
 
 const Careers = () => {
   const jobOpenings = [
@@ -86,84 +86,65 @@ const Careers = () => {
           </div>
 
           {/* Benefits Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="bg-gray-900 rounded-xl p-6">
-                <h3 className="text-xl font-bold mb-4">{benefit.title}</h3>
-                <ul className="space-y-2">
-                  {benefit.items.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-green-400">✓</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">Why Join Us?</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {benefits.map((benefit, index) => (
+                <div key={index} className="bg-gray-900 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <h3 className="text-xl font-bold mb-4">{benefit.title}</h3>
+                  <ul className="space-y-2">
+                    {benefit.items.map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-2 text-gray-300">
+                        <svg
+                          className="w-5 h-5 text-green-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Job Openings Section */}
-          <div className="mb-16">
+          {/* Job Openings */}
+          <div>
             <h2 className="text-3xl font-bold mb-8 text-center">Open Positions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {jobOpenings.map((job, index) => (
-                <div key={index} className="bg-gray-900 rounded-xl p-6">
+                <div key={index} className="bg-gray-900 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h3 className="text-xl font-bold">{job.title}</h3>
                       <p className="text-green-400">{job.department}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-gray-400">{job.location}</p>
-                      <p className="text-sm text-gray-400">{job.type}</p>
+                      <span className="inline-block bg-gray-800 text-gray-300 px-3 py-1 rounded-full text-sm mb-2">
+                        {job.location}
+                      </span>
+                      <span className="block text-gray-400 text-sm">{job.type}</span>
                     </div>
                   </div>
                   <p className="text-gray-300 mb-4">{job.description}</p>
-                  <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300">
+                  <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300">
                     Apply Now
                   </button>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Culture Section */}
-          <div className="bg-gray-900 rounded-xl p-8 mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">Our Culture</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="text-4xl mb-4">🎯</div>
-                <h3 className="text-xl font-bold mb-2">Mission-Driven</h3>
-                <p className="text-gray-300">We're committed to making energy management accessible to everyone.</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl mb-4">🤝</div>
-                <h3 className="text-xl font-bold mb-2">Collaborative</h3>
-                <p className="text-gray-300">We believe in the power of teamwork and shared success.</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl mb-4">🚀</div>
-                <h3 className="text-xl font-bold mb-2">Innovative</h3>
-                <p className="text-gray-300">We encourage creativity and continuous learning.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA Section */}
-          <div className="text-center">
-            <h2 className="text-3xl font-bold mb-6">Ready to Join Us?</h2>
-            <p className="text-xl text-gray-300 mb-8">
-              Don't see a position that matches your skills? We're always looking for talented individuals.
-            </p>
-            <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300">
-              Send Your Resume
-            </button>
-          </div>
         </div>
       </main>
-
-      {/* Footer */}
-     
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from "./assests/icons/logo.png";
+import logo from "../assets/icons/logo.png";
 
 const Blog = () => {
   const articles = [
@@ -80,15 +80,11 @@ const Blog = () => {
           </div>
 
           {/* Categories */}
-          <div className="flex flex-wrap gap-4 justify-center mb-12">
+          <div className="flex flex-wrap gap-4 mb-12 justify-center">
             {categories.map((category, index) => (
               <button
                 key={index}
-                className={`px-4 py-2 rounded-full transition-all duration-300 ${
-                  index === 0
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-                }`}
+                className="px-4 py-2 rounded-full bg-gray-900 hover:bg-green-500 transition-all duration-300"
               >
                 {category}
               </button>
@@ -96,9 +92,9 @@ const Blog = () => {
           </div>
 
           {/* Articles Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {articles.map((article, index) => (
-              <div key={index} className="bg-gray-900 rounded-xl overflow-hidden">
+              <article key={index} className="bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                 <img
                   src={article.image}
                   alt={article.title}
@@ -106,11 +102,17 @@ const Blog = () => {
                 />
                 <div className="p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <span className="text-green-400 text-sm">{article.category}</span>
-                    <span className="text-gray-400 text-sm">{article.date}</span>
-                    <span className="text-gray-400 text-sm">{article.readTime}</span>
+                    <span className="text-green-400 text-sm font-semibold">
+                      {article.category}
+                    </span>
+                    <span className="text-gray-400 text-sm">
+                      {article.date}
+                    </span>
+                    <span className="text-gray-400 text-sm">
+                      {article.readTime}
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{article.title}</h3>
+                  <h2 className="text-2xl font-bold mb-3">{article.title}</h2>
                   <p className="text-gray-300 mb-4">{article.excerpt}</p>
                   <Link
                     to="#"
@@ -132,7 +134,7 @@ const Blog = () => {
                     </svg>
                   </Link>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
 

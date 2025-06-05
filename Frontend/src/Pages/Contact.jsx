@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from "./assests/icons/logo.png";
+import logo from "../assets/icons/logo.png";
 
 const Contact = () => {
   const contactInfo = [
@@ -77,57 +77,89 @@ const Contact = () => {
             </p>
           </div>
 
-          {/* Contact Info Cards */}
+          {/* Contact Info Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {contactInfo.map((info, index) => (
-              <div key={index} className="bg-gray-900 rounded-xl p-6 text-center">
+              <div key={index} className="bg-gray-900 rounded-xl p-6 shadow-lg">
                 <h3 className="text-xl font-bold mb-4">{info.title}</h3>
-                <p className="text-gray-300 mb-2">{info.email}</p>
-                <p className="text-gray-300 mb-2">{info.phone}</p>
-                <p className="text-gray-400 text-sm">{info.hours}</p>
+                <div className="space-y-3">
+                  <p className="text-gray-300">
+                    <span className="text-green-400">Email:</span> {info.email}
+                  </p>
+                  <p className="text-gray-300">
+                    <span className="text-green-400">Phone:</span> {info.phone}
+                  </p>
+                  <p className="text-gray-300">
+                    <span className="text-green-400">Hours:</span> {info.hours}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
 
+          {/* Offices Section */}
+          <div className="bg-gray-900 rounded-xl p-8 shadow-lg mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">Our Offices</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {offices.map((office, index) => (
+                <div key={index} className="text-center">
+                  <h3 className="text-xl font-bold mb-3">{office.city}</h3>
+                  <p className="text-gray-300 mb-2">{office.address}</p>
+                  <p className="text-gray-300 mb-2">{office.state}</p>
+                  <p className="text-gray-300">{office.phone}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Contact Form */}
-          <div className="bg-gray-900 rounded-xl p-8 mb-16">
+          <div className="bg-gray-900 rounded-xl p-8 shadow-lg">
             <h2 className="text-3xl font-bold mb-8 text-center">Send Us a Message</h2>
-            <form className="max-w-2xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <form className="max-w-2xl mx-auto space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-gray-300 mb-2">First Name</label>
+                  <label htmlFor="name" className="block text-sm font-medium mb-2">
+                    Name
+                  </label>
                   <input
                     type="text"
-                    className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-green-500"
+                    id="name"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition"
+                    placeholder="Your name"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-300 mb-2">Last Name</label>
+                  <label htmlFor="email" className="block text-sm font-medium mb-2">
+                    Email
+                  </label>
                   <input
-                    type="text"
-                    className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-green-500"
+                    type="email"
+                    id="email"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition"
+                    placeholder="Your email"
                   />
                 </div>
               </div>
-              <div className="mb-6">
-                <label className="block text-gray-300 mb-2">Email</label>
-                <input
-                  type="email"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-green-500"
-                />
-              </div>
-              <div className="mb-6">
-                <label className="block text-gray-300 mb-2">Subject</label>
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium mb-2">
+                  Subject
+                </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-green-500"
+                  id="subject"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition"
+                  placeholder="Message subject"
                 />
               </div>
-              <div className="mb-6">
-                <label className="block text-gray-300 mb-2">Message</label>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium mb-2">
+                  Message
+                </label>
                 <textarea
-                  rows="4"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-green-500"
+                  id="message"
+                  rows="6"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition"
+                  placeholder="Your message"
                 ></textarea>
               </div>
               <button
@@ -138,40 +170,8 @@ const Contact = () => {
               </button>
             </form>
           </div>
-
-          {/* Office Locations */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">Our Offices</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {offices.map((office, index) => (
-                <div key={index} className="bg-gray-900 rounded-xl p-6">
-                  <h3 className="text-xl font-bold mb-4">{office.city}</h3>
-                  <p className="text-gray-300 mb-2">{office.address}</p>
-                  <p className="text-gray-300 mb-2">{office.state}</p>
-                  <p className="text-gray-300">{office.phone}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* FAQ Section */}
-          <div className="text-center">
-            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions</h2>
-            <p className="text-xl text-gray-300 mb-8">
-              Can't find what you're looking for? Check our FAQ section for quick answers.
-            </p>
-            <Link
-              to="/faqs"
-              className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300"
-            >
-              View FAQs
-            </Link>
-          </div>
         </div>
       </main>
-
-      {/* Footer */}
-     
     </div>
   );
 };

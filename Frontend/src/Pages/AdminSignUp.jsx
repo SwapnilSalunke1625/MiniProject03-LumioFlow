@@ -1,239 +1,245 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import logo from '../assets/icons/logo.png';
 
-export default function AdminSignUp() {
-  // rounting purpose
+const AdminSignUp = () => {
   const navigate = useNavigate();
-
-  // usestate hook for taking data
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    country: "",
-    state: "",
-    city: "",
-    userType: "",
-    password: "",
-    confirmPassword: "",
-    preferredNotification: {
-      whatsappnotify: false,
-      emailnotify: false,
-    },
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // handling changes while taking inputs
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
-    if (name === "whatsappnotify" || name === "emailnotify") {
-      setFormData((prev) => ({
-        ...prev,
-        preferredNotification: {
-          ...prev.preferredNotification,
-          [name]: checked,
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/v1/users/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
         },
-      }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Sign up failed');
+      }
+
+      navigate('/signin');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // handling submit form
- const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (formData.password !== formData.confirmPassword) {
-    alert("Passwords do not match!");
-    return;
-  }
-
-  // Convert preferredNotification object to array
-  const selectedNotifications = [];
-  if (formData.preferredNotification.whatsappnotify) {
-    selectedNotifications.push("whatsapp");
-  }
-  if (formData.preferredNotification.emailnotify) {
-    selectedNotifications.push("email");
-  }
-
-  try {
-    const dataToSend = {
-      ...formData,
-      preferredNotification: selectedNotifications, // ✅ this is now an array of strings
-      signupDate: new Date().toISOString(),
-    };
-
-    const res = await axios.post("/api/v1/users/signup", dataToSend);
-    console.log("Signup Success:", res.data);
-
-    navigate("/signin");
-
-    setFormData({
-      fullName: "",
-      email: "",
-      phone: "",
-      country: "",
-      state: "",
-      city: "",
-      userType: "",
-      password: "",
-      confirmPassword: "",
-      preferredNotification: {
-        whatsappnotify: false,
-        emailnotify: false,
-      },
-    });
-  } catch (err) {
-    console.error("Signup Error:", err.response?.data || err.message);
-    alert("Signup failed. Please try again.");
-  }
-};
-
-
   return (
-    <div className="flex justify-center items-center min-h-screen w-screen bg-gray-100">
-      <div className="bg-gray-200 w-[430px] h-[570px] rounded-xl shadow-lg">
-        <h2 className="text-4xl font-bold text-center my-4">Sign Up</h2>
+    <div className="min-h-screen bg-black text-white flex items-center justify-center relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black opacity-50"></div>
+        <div className="absolute inset-0">
+          {[...Array(10)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-green-500 rounded-full"
+              initial={{
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                scale: Math.random() * 2 + 1
+              }}
+              animate={{
+                y: [null, Math.random() * window.innerHeight],
+                opacity: [0.2, 0.8, 0.2]
+              }}
+              transition={{
+                duration: Math.random() * 3 + 2,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+          ))}
+        </div>
+      </div>
 
-        <form
-          className="flex justify-center items-center flex-col gap-3"
-          onSubmit={handleSubmit} /* <-- Correct usage here */
+      <div className="max-w-md w-full mx-4 relative z-10">
+        <motion.div 
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <input
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            placeholder="Full Name"
-            className="input-box w-[320px] h-[40px] bg-white rounded-xl outline-none px-4 text-lg"
-            required
-          />
-
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            className="input-box w-[320px] h-[40px] bg-white rounded-xl outline-none px-4 text-lg"
-            required
-          />
-
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="Phone Number"
-            className="input-box w-[320px] h-[40px] bg-white rounded-xl outline-none px-4 text-lg"
-            required
-          />
-
-          <div className="flex gap-2">
-            <input
-              type="text"
-              name="country"
-              value={formData.country}
-              onChange={handleChange}
-              placeholder="Country"
-              className="input-box h-[40px] w-[100px] bg-white rounded-l-xl rounded-r-md outline-none px-4 text-lg"
-              required
+          <Link to="/">
+            <motion.img 
+              src={logo} 
+              alt="Logo" 
+              className="w-24 h-auto mx-auto mb-6"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.2 }}
             />
-            <input
-              type="text"
-              name="state"
-              value={formData.state}
-              onChange={handleChange}
-              placeholder="State"
-              className="input-box h-[40px] w-[100px] bg-white rounded-md outline-none px-4 text-lg"
-              required
-            />
-            <input
-              type="text"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              placeholder="City"
-              className="input-box h-[40px] w-[100px] bg-white rounded-r-xl rounded-l-md outline-none px-4 text-lg"
-              required
-            />
+          </Link>
+          <motion.h1 
+            className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            Create Account
+          </motion.h1>
+          <motion.p 
+            className="text-gray-400 mt-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            Join us to start managing your energy efficiently
+          </motion.p>
+        </motion.div>
+
+        <motion.form 
+          onSubmit={handleSubmit} 
+          className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-green-500/20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          {error && (
+            <motion.div 
+              className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-xl mb-6"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              {error}
+            </motion.div>
+          )}
+
+          <div className="space-y-6">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium mb-2 text-gray-300">
+                Full Name
+              </label>
+              <motion.input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all duration-300"
+                placeholder="Enter your full name"
+                whileFocus={{ scale: 1.02 }}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-300">
+                Email Address
+              </label>
+              <motion.input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all duration-300"
+                placeholder="Enter your email"
+                whileFocus={{ scale: 1.02 }}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium mb-2 text-gray-300">
+                Password
+              </label>
+              <motion.input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all duration-300"
+                placeholder="Create a password"
+                whileFocus={{ scale: 1.02 }}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-gray-300">
+                Confirm Password
+              </label>
+              <motion.input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all duration-300"
+                placeholder="Confirm your password"
+                whileFocus={{ scale: 1.02 }}
+              />
+            </div>
+
+            <motion.button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-green-500/25 transform hover:scale-[1.02]"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Creating account...
+                </span>
+              ) : (
+                'Create Account'
+              )}
+            </motion.button>
           </div>
 
-          <select
-            name="userType"
-            value={formData.userType}
-            onChange={handleChange}
-            className="input-box w-[320px] h-[40px] bg-white rounded-xl outline-none px-4 text-lg"
-            required
-          >
-            <option value="">Select User Type</option>
-            <option value="Residential">Residential</option>
-            <option value="Commercial">Commercial</option>
-            <option value="Industrial">Industrial</option>
-          </select>
-
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            className="input-box w-[320px] h-[40px] bg-white rounded-xl outline-none px-4 text-lg"
-            required
-          />
-
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm Password"
-            className="input-box w-[320px] h-[40px] bg-white rounded-xl outline-none px-4 text-lg"
-            required
-          />
-
-          <p className="text-center text-gray-600 font-semibold">
-            Preferred Notification:
-            <label className="ml-2">
-              <input
-                type="checkbox"
-                name="whatsappnotify"
-                checked={formData.preferredNotification.whatsappnotify}
-                onChange={handleChange}
-                className="mr-1"
-              />
-              WhatsApp
-            </label>
-            <label className="ml-2">
-              <input
-                type="checkbox"
-                name="emailnotify"
-                checked={formData.preferredNotification.emailnotify}
-                onChange={handleChange}
-                className="mr-1"
-              />
-              Email
-            </label>
-          </p>
-
-          <button
-            type="submit"
-            className="w-[150px] py-2 px-4 font-bold outline-none rounded-lg bg-blue-600 text-white"
-          >
-            Sign Up
-          </button>
-
-          <p className="text-center text-gray-600">
-            Already have an account?{" "}
-            <Link to="/signin" className="text-blue-600 hover:underline">
-              Log in
-            </Link>
-          </p>
-        </form>
+          <div className="mt-8 text-center">
+            <p className="text-gray-400">
+              Already have an account?{' '}
+              <Link 
+                to="/signin" 
+                className="text-green-500 hover:text-green-400 font-medium transition-colors duration-300"
+              >
+                Sign In
+              </Link>
+            </p>
+          </div>
+        </motion.form>
       </div>
     </div>
   );
-}
+};
+
+export default AdminSignUp;

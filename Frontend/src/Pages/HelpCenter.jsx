@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from "./assests/icons/logo.png";
+import logo from "../assets/icons/logo.png";
 
 const HelpCenter = () => {
   const categories = [
@@ -104,11 +104,21 @@ const HelpCenter = () => {
               <input
                 type="text"
                 placeholder="Search for help..."
-                className="w-full px-6 py-4 rounded-xl bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-green-500"
+                className="w-full px-6 py-4 rounded-xl bg-gray-900 border border-gray-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition"
               />
-              <button className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-400 transition">
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
                 </svg>
               </button>
             </div>
@@ -136,7 +146,7 @@ const HelpCenter = () => {
                 <h2 className="text-3xl font-bold mb-8">{category.title}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {category.articles.map((article, idx) => (
-                    <div key={idx} className="bg-gray-900 rounded-xl p-6">
+                    <div key={idx} className="bg-gray-900 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
                       <h3 className="text-xl font-bold mb-3">{article.title}</h3>
                       <p className="text-gray-300 mb-4">{article.description}</p>
                       <Link
@@ -169,7 +179,7 @@ const HelpCenter = () => {
           <div className="mt-16 text-center">
             <h2 className="text-3xl font-bold mb-6">Still Need Help?</h2>
             <p className="text-xl text-gray-300 mb-8">
-              Our support team is here to assist you with any questions or concerns.
+              Our support team is here to assist you 24/7.
             </p>
             <Link
               to="/contact"

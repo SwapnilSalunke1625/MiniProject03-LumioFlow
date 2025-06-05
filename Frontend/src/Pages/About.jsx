@@ -55,24 +55,7 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-black/90 shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link to="/">
-            <img src={logo} alt="Logo" className="w-24 h-auto" />
-          </Link>
-          <nav className="hidden md:flex gap-8 text-sm font-semibold">
-            <Link to="/" className="hover:text-green-400 transition">HOME</Link>
-            <Link to="/products" className="hover:text-green-400 transition">PRODUCTS</Link>
-            <Link to="/energy-management" className="hover:text-green-400 transition">HOME ENERGY MANAGEMENT</Link>
-            <Link to="/resources" className="hover:text-green-400 transition">RESOURCES</Link>
-            <Link to="/about" className="text-green-400">ABOUT</Link>
-          </nav>
-          <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-5 rounded-xl transition-all duration-300 shadow-lg">
-            SHOP
-          </button>
-        </div>
-      </header>
+    
 
       {/* Main Content */}
       <main className="pt-24 pb-16">
