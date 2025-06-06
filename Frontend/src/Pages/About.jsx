@@ -1,174 +1,212 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from "./../assets/icons/logo.png";
+import { motion } from 'framer-motion';
+import { FaBolt, FaMicrochip, FaChartLine, FaShieldAlt, FaUsers, FaLightbulb, FaUserGraduate } from 'react-icons/fa';
 
 const About = () => {
-  const teamMembers = [
+  const features = [
     {
-      name: "John Smith",
-      role: "CEO & Founder",
-      bio: "With over 15 years of experience in renewable energy, John leads our vision for sustainable energy solutions.",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop"
+      icon: <FaMicrochip className="text-4xl text-green-500" />,
+      title: "ESP32-Powered",
+      description: "Utilizing the powerful ESP32 microcontroller for real-time energy monitoring and data processing"
     },
     {
-      name: "Sarah Johnson",
-      role: "CTO",
-      bio: "Sarah brings her expertise in smart home technology and IoT to drive our technical innovation.",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop"
+      icon: <FaChartLine className="text-4xl text-blue-500" />,
+      title: "Real-Time Monitoring",
+      description: "Track your energy consumption in real-time with precise measurements from ACS712 and ZMPT101B sensors"
     },
     {
-      name: "Michael Chen",
-      role: "Head of Product",
-      bio: "Michael ensures our products meet the highest standards of quality and user experience.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
+      icon: <FaShieldAlt className="text-4xl text-purple-500" />,
+      title: "Secure & Reliable",
+      description: "Built with security in mind, ensuring your energy data is protected and system operation is reliable"
     },
     {
-      name: "Emily Rodriguez",
-      role: "Customer Success",
-      bio: "Emily leads our customer support team, ensuring every customer gets the best experience.",
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop"
+      icon: <FaUsers className="text-4xl text-yellow-500" />,
+      title: "User-Friendly",
+      description: "Intuitive interface designed for both technical and non-technical users"
+    },
+    {
+      icon: <FaLightbulb className="text-4xl text-red-500" />,
+      title: "Energy Efficient",
+      description: "Helps identify and reduce energy waste, leading to significant cost savings"
+    },
+    {
+      icon: <FaBolt className="text-4xl text-indigo-500" />,
+      title: "Smart Integration",
+      description: "Seamlessly integrates with existing smart home systems and IoT platforms"
     }
   ];
 
-  const milestones = [
+  const teamMembers = [
     {
-      year: "2020",
-      title: "Company Founded",
-      description: "Started with a vision to revolutionize home energy management"
+      name: "Swapnil Salunke",
+      role: "Project Lead",
+      icon: <FaUserGraduate className="text-4xl text-green-500" />
     },
     {
-      year: "2021",
-      title: "First Product Launch",
-      description: "Released our flagship energy monitoring system"
+      name: "Vishal Dhangare",
+      role: "UI Developer",
+      icon: <FaUserGraduate className="text-4xl text-blue-500" />
     },
     {
-      year: "2022",
-      title: "Market Expansion",
-      description: "Expanded to 10 major cities across the country"
-    },
-    {
-      year: "2023",
-      title: "Innovation Award",
-      description: "Recognized for breakthrough in smart energy technology"
+      name: "Laxmikant Tawde",
+      role: "Backend Developer",
+      icon: <FaUserGraduate className="text-4xl text-purple-500" />
     }
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
-    
+    <div className="min-h-screen bg-black text-white p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Hero Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
+        >
+          <br /><br />
+          <h1 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+            About LumioFlow
+          </h1>
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            Revolutionizing energy monitoring with ESP32-based smart solutions for homes and businesses
+          </p>
+        </motion.div>
 
-      {/* Main Content */}
-      <main className="pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-6">
-          {/* Hero Section */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">About Us</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              We're on a mission to make home energy management smarter, more efficient, and more sustainable for everyone.
-            </p>
-          </div>
+        {/* Mission Statement */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-green-500/20 mb-16"
+        >
+          <h2 className="text-3xl font-bold mb-6 text-center">Our Mission</h2>
+          <p className="text-lg text-gray-300 text-center max-w-4xl mx-auto">
+            We're dedicated to making energy monitoring accessible, efficient, and intelligent. 
+            By combining the power of ESP32 microcontrollers with advanced sensors, we provide 
+            real-time insights into energy consumption, helping users make informed decisions 
+            about their energy usage and contribute to a more sustainable future.
+          </p>
+        </motion.div>
 
-          {/* Mission Section */}
-          <div className="bg-gray-900 rounded-xl p-8 mb-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
-                <p className="text-gray-300 mb-4">
-                  At Emporia Energy, we believe that everyone should have access to smart, efficient energy management solutions. Our mission is to empower homeowners with the tools and knowledge they need to take control of their energy usage, reduce costs, and contribute to a more sustainable future.
-                </p>
-                <p className="text-gray-300">
-                  Through innovative technology and user-friendly solutions, we're making it easier than ever to monitor, manage, and optimize home energy consumption.
-                </p>
-              </div>
-              <div className="bg-green-500/10 p-8 rounded-xl">
-                <h3 className="text-2xl font-bold mb-4">Our Values</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <span className="text-green-400 text-xl">✓</span>
-                    <span>Innovation in energy technology</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-green-400 text-xl">✓</span>
-                    <span>Environmental sustainability</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-green-400 text-xl">✓</span>
-                    <span>Customer empowerment</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-green-400 text-xl">✓</span>
-                    <span>Quality and reliability</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Team Section */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">Our Team</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {teamMembers.map((member, index) => (
-                <div key={index} className="bg-gray-900 rounded-xl overflow-hidden">
-                  <img 
-                    src={member.image} 
-                    alt={member.name}
-                    className="w-full h-64 object-cover"
-                  />
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                    <p className="text-green-400 mb-3">{member.role}</p>
-                    <p className="text-gray-300 text-sm">{member.bio}</p>
-                  </div>
+        {/* Features Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+        >
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+              className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20 hover:border-green-500/50 transition-all duration-300"
+            >
+              <div className="text-center">
+                <div className="flex justify-center mb-4">
+                  {feature.icon}
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Timeline Section */}
-          <div className="bg-gray-900 rounded-xl p-8 mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">Our Journey</h2>
-            <div className="relative">
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-green-500/20"></div>
-              <div className="space-y-12">
-                {milestones.map((milestone, index) => (
-                  <div key={index} className="relative">
-                    <div className="flex items-center gap-8">
-                      <div className="w-1/2 text-right">
-                        <h3 className="text-2xl font-bold text-green-400">{milestone.year}</h3>
-                        <p className="text-xl font-semibold">{milestone.title}</p>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-                        <div className="w-4 h-4 rounded-full bg-black"></div>
-                      </div>
-                      <div className="w-1/2">
-                        <p className="text-gray-300">{milestone.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                <p className="text-gray-400">{feature.description}</p>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          ))}
+        </motion.div>
 
-          {/* CTA Section */}
-          <div className="text-center">
-            <h2 className="text-3xl font-bold mb-6">Join Our Mission</h2>
-            <p className="text-xl text-gray-300 mb-8">
-              Be part of the energy revolution. Together, we can create a more sustainable future.
-            </p>
-            <div className="flex gap-4 justify-center">
-              <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300">
-                Get Started
-              </button>
-              <button className="border border-green-500 text-green-500 hover:bg-green-500 hover:text-white font-bold py-3 px-8 rounded-lg transition-all duration-300">
-                Contact Us
-              </button>
+        {/* Technology Stack */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-green-500/20 mb-16"
+        >
+          <h2 className="text-3xl font-bold mb-8 text-center">Our Technology</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-xl font-bold mb-4">Hardware Components</h3>
+              <ul className="space-y-3 text-gray-300">
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-500">•</span>
+                  <span>ESP32 Microcontroller</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-500">•</span>
+                  <span>ACS712 Current Sensor (0-30A)</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-500">•</span>
+                  <span>ZMPT101B Voltage Transformer</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-4">Software Stack</h3>
+              <ul className="space-y-3 text-gray-300">
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-500">•</span>
+                  <span>React Frontend</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-500">•</span>
+                  <span>Node.js Backend</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-500">•</span>
+                  <span>MongoDB Database</span>
+                </li>
+              </ul>
             </div>
           </div>
-        </div>
-      </main>
-      
+        </motion.div>
+
+        {/* Team Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-green-500/20 mb-16"
+        >
+          <h2 className="text-3xl font-bold mb-8 text-center">Our Team</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {teamMembers.map((member, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+                className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20 hover:border-green-500/50 transition-all duration-300 text-center"
+              >
+                <div className="flex justify-center mb-4">
+                  {member.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-2">{member.name}</h3>
+                <p className="text-green-400">{member.role}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Contact Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="text-center"
+        >
+          <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
+          <p className="text-gray-400 mb-8">
+            Have questions about our ESP32 energy monitoring system? We'd love to hear from you.
+          </p>
+          <a
+            href="#"
+            className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300"
+          >
+            Contact Us
+          </a>
+        </motion.div>
+      </div>
     </div>
   );
 };

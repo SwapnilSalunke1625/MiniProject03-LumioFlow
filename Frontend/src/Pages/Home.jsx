@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import CountUp from 'react-countup';
 import logo from "../assets/icons/logo.png";
 import LoadingSpinner from '../Components/LoadingSpinner';
 
@@ -49,10 +50,10 @@ const Home = () => {
   ];
 
   const stats = [
-    { value: "30%", label: "Average Energy Savings", icon: "⚡" },
-    { value: "24/7", label: "Real-time Monitoring", icon: "📱" },
-    { value: "10k+", label: "Happy Customers", icon: "👥" },
-    { value: "99.9%", label: "System Uptime", icon: "🔄" }
+    { value: 30, suffix: "%", label: "Average Energy Savings", icon: "⚡" },
+    { value: 24, suffix: "/7", label: "Real-time Monitoring", icon: "📱" },
+    { value: 10000, suffix: "+", label: "Happy Customers", icon: "👥" },
+    { value: 99.9, suffix: "%", label: "System Uptime", icon: "🔄" }
   ];
 
   const testimonials = [
@@ -73,6 +74,114 @@ const Home = () => {
       role: "Environmental Activist",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
       quote: "Finally, a solution that makes sustainable living accessible and easy to understand."
+    }
+  ];
+
+  const howItWorks = [
+    {
+      step: 1,
+      title: "Connect Hardware",
+      description: "Connect ESP32 with ACS712 current sensor and ZMPT101B voltage sensor to your electrical system.",
+      icon: "🔌"
+    },
+    {
+      step: 2,
+      title: "Real-time Monitoring",
+      description: "ESP32 continuously measures voltage and current, calculating power consumption in real-time.",
+      icon: "📊"
+    },
+    {
+      step: 3,
+      title: "Data Processing",
+      description: "Sensor data is processed and sent to our cloud platform for analysis and visualization.",
+      icon: "💡"
+    },
+    {
+      step: 4,
+      title: "Smart Insights",
+      description: "Get detailed insights about your power consumption patterns and optimization suggestions.",
+      icon: "💰"
+    }
+  ];
+
+  const hardwareSpecs = [
+    {
+      name: "ESP32",
+      description: "Powerful microcontroller with WiFi and Bluetooth capabilities",
+      features: ["Dual-core processor", "Built-in WiFi", "Low power consumption"],
+      icon: "🖥️"
+    },
+    {
+      name: "ACS712",
+      description: "Hall-effect based current sensor for accurate current measurement",
+      features: ["Isolated measurement", "High accuracy", "Wide current range"],
+      icon: "⚡"
+    },
+    {
+      name: "ZMPT101B",
+      description: "Voltage transformer module for precise voltage monitoring",
+      features: ["AC voltage measurement", "High precision", "Safe isolation"],
+      icon: "📈"
+    }
+  ];
+
+  const latestNews = [
+    {
+      title: "New AI Features Released",
+      date: "March 15, 2024",
+      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=300&fit=crop",
+      excerpt: "Our latest AI-powered features help you save even more energy with smart automation."
+    },
+    {
+      title: "Partnership Announcement",
+      date: "March 10, 2024",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop",
+      excerpt: "We're excited to announce our partnership with leading smart home manufacturers."
+    },
+    {
+      title: "Community Milestone",
+      date: "March 5, 2024",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop",
+      excerpt: "Our community has collectively saved over 1 million kWh of energy this month!"
+    }
+  ];
+
+  const techStack = [
+    {
+      name: "ESP32",
+      icon: "🖥️",
+      description: "Powerful microcontroller with WiFi capabilities",
+      features: ["Dual-core processor", "Built-in WiFi", "Low power consumption"]
+    },
+    {
+      name: "ACS712",
+      icon: "⚡",
+      description: "Hall-effect current sensor",
+      features: ["0-30A range", "High accuracy", "Isolated measurement"]
+    },
+    {
+      name: "ZMPT101B",
+      icon: "📊",
+      description: "Voltage transformer module",
+      features: ["AC voltage measurement", "High precision", "Safe isolation"]
+    },
+    {
+      name: "React",
+      icon: "⚛️",
+      description: "Frontend framework",
+      features: ["Modern UI", "Real-time updates", "Responsive design"]
+    },
+    {
+      name: "Node.js",
+      icon: "🟢",
+      description: "Backend runtime",
+      features: ["Real-time data processing", "WebSocket support", "RESTful API"]
+    },
+    {
+      name: "MongoDB",
+      icon: "🍃",
+      description: "Database",
+      features: ["Time-series data", "Real-time analytics", "Scalable storage"]
     }
   ];
 
@@ -248,24 +357,17 @@ const Home = () => {
                   className="text-center"
                   variants={itemVariants}
                 >
-                  <motion.div
-                    className="text-4xl mb-2"
-                    animate={{
-                      y: [0, -5, 0],
-                      rotate: [0, 5, 0]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    {stat.icon}
-                  </motion.div>
-                  <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
-                    {stat.value}
-                  </h3>
-                  <p className="text-gray-400">{stat.label}</p>
+                  <div className="text-4xl font-bold mb-2">
+                    <CountUp
+                      end={stat.value}
+                      suffix={stat.suffix}
+                      duration={2.5}
+                      enableScrollSpy
+                      scrollSpyOnce
+                    />
+                  </div>
+                  <div className="text-2xl mb-2">{stat.icon}</div>
+                  <div className="text-gray-400">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -358,6 +460,191 @@ const Home = () => {
             </motion.div>
           </div>
         </section>
+
+        {/* How It Works Section */}
+        <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.h2 
+              className="text-4xl font-bold text-center mb-16"
+              variants={itemVariants}
+            >
+              How It Works
+            </motion.h2>
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-4 gap-8"
+              variants={containerVariants}
+            >
+              {howItWorks.map((step, index) => (
+                <motion.div
+                  key={index}
+                  className="relative bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-green-500/20"
+                  variants={itemVariants}
+                  whileHover={{ 
+                    scale: 1.05,
+                    borderColor: "rgba(34, 197, 94, 0.5)"
+                  }}
+                >
+                  <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center text-2xl font-bold">
+                    {step.step}
+                  </div>
+                  <div className="text-4xl mb-4">{step.icon}</div>
+                  <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                  <p className="text-gray-400">{step.description}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Hardware Integration Section */}
+        <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.h2 
+              className="text-4xl font-bold text-center mb-16"
+              variants={itemVariants}
+            >
+              Hardware Integration
+            </motion.h2>
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              variants={containerVariants}
+            >
+              {hardwareSpecs.map((hardware, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-green-500/20"
+                  variants={itemVariants}
+                  whileHover={{ 
+                    scale: 1.05,
+                    borderColor: "rgba(34, 197, 94, 0.5)"
+                  }}
+                >
+                  <div className="text-4xl mb-4">{hardware.icon}</div>
+                  <h3 className="text-2xl font-bold mb-2">{hardware.name}</h3>
+                  <p className="text-gray-400 mb-4">{hardware.description}</p>
+                  <ul className="space-y-2">
+                    {hardware.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-center text-gray-300">
+                        <span className="text-green-500 mr-2">✓</span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </motion.div>
+            <motion.div 
+              className="mt-12 text-center"
+              variants={itemVariants}
+            >
+              <p className="text-gray-400 mb-4">
+                Our system uses a combination of ESP32 microcontroller and precision sensors to provide accurate energy monitoring.
+              </p>
+              <Link
+                to="/hardware-setup"
+                className="inline-block bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-green-500/25"
+              >
+                View Hardware Setup Guide
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Latest News Section */}
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.h2 
+              className="text-4xl font-bold text-center mb-16"
+              variants={itemVariants}
+            >
+              Latest News
+            </motion.h2>
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              variants={containerVariants}
+            >
+              {latestNews.map((news, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-gray-900/50 backdrop-blur-sm rounded-xl overflow-hidden border border-green-500/20"
+                  variants={itemVariants}
+                  whileHover={{ 
+                    scale: 1.05,
+                    borderColor: "rgba(34, 197, 94, 0.5)"
+                  }}
+                >
+                  <img 
+                    src={news.image} 
+                    alt={news.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-6">
+                    <p className="text-green-400 mb-2">{news.date}</p>
+                    <h3 className="text-xl font-bold mb-2">{news.title}</h3>
+                    <p className="text-gray-400">{news.excerpt}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Technology Stack Section */}
+        <section className="py-20 relative">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              className="text-center mb-16"
+              variants={itemVariants}
+            >
+              <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+                Technology Stack
+              </h2>
+              <p className="text-xl text-gray-300">
+                Built with cutting-edge technologies for reliable and efficient energy monitoring
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {techStack.map((tech, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 hover:bg-gray-900/70 transition-all duration-300"
+                >
+                  <div className="flex items-center space-x-4 mb-4">
+                    <span className="text-3xl">{tech.icon}</span>
+                    <h3 className="text-xl font-bold">{tech.name}</h3>
+                  </div>
+                  <p className="text-gray-400 mb-4">{tech.description}</p>
+                  <ul className="space-y-2">
+                    {tech.features.map((feature, i) => (
+                      <li key={i} className="flex items-center space-x-2 text-sm text-gray-300">
+                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Floating Contact Button */}
+        <motion.div
+          className="fixed bottom-8 right-8 z-50"
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+        >
+          <Link
+            to="/contact"
+            className="bg-gradient-to-r from-green-500 to-blue-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+          >
+            <span className="text-2xl">💬</span>
+            <span className="hidden md:inline">Contact Us</span>
+          </Link>
+        </motion.div>
 
         {/* CTA Section */}
         <section className="py-20">

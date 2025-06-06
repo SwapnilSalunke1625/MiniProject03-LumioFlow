@@ -56,15 +56,15 @@ export default function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <Navbar/>
-        <Routes>      
-          <Route path="/" element={<Home />} />        
+        <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/signin" element={<AdminSignIn />} />
           <Route path="/signup" element={<AdminSignUp />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/products" element={<Products />} />
           <Route path="/energy-management" element={<EnergyManagement />} />
           <Route path="/resources" element={<Resources />} />
-          <Route path="/about" element={<About />} />        
+          <Route path="/about" element={<About />} />
         </Routes>
         <Footer/>
       </BrowserRouter>

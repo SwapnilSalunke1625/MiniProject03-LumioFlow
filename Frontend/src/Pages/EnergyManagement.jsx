@@ -1,95 +1,122 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from "./../assets/icons/logo.png";
-import energyVisual from "./../assets/icons/energy-circle.png";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { FaBolt, FaLightbulb, FaFan, FaTv, FaPlug } from 'react-icons/fa';
 
 const EnergyManagement = () => {
-  const features = [
-    {
-      title: "Real-time Monitoring",
-      description: "Track your energy usage in real-time with detailed insights and analytics.",
-      icon: "📊"
-    },
-    {
-      title: "Smart Automation",
-      description: "Automate your home's energy usage based on your preferences and schedule.",
-      icon: "🤖"
-    },
-    {
-      title: "Cost Savings",
-      description: "Reduce your energy bills with intelligent optimization and usage patterns.",
-      icon: "💰"
-    },
-    {
-      title: "Environmental Impact",
-      description: "Monitor and reduce your carbon footprint with sustainable energy practices.",
-      icon: "🌱"
-    }
-  ];
+  const [devices, setDevices] = useState([
+    { id: 1, name: "Living Room Lights", power: 120, icon: <FaLightbulb />, status: true },
+    { id: 2, name: "Kitchen Appliances", power: 450, icon: <FaPlug />, status: true },
+    { id: 3, name: "HVAC System", power: 800, icon: <FaFan />, status: false },
+    { id: 4, name: "Entertainment System", power: 200, icon: <FaTv />, status: true }
+  ]);
+
+  const toggleDevice = (id) => {
+    setDevices(devices.map(device => 
+      device.id === id ? { ...device, status: !device.status } : device
+    ));
+  };
+
+  // Calculate total power based on active devices
+  const totalPower = devices.reduce((sum, device) => 
+    device.status ? sum + device.power : sum, 0
+  );
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white p-6">
+      <div className="max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-12 text-center"
+        >
 
+          <br /><br />
+          <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+            Energy Management
+          </h1>
+          <p className="text-gray-400">
+            Control your devices and monitor power consumption
+          </p>
+        </motion.div>
 
-      {/* Main Content */}
-      <main className="pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Home Energy Management</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Take control of your home's energy usage with our comprehensive management solution.
-              Monitor, optimize, and save on your energy consumption.
-            </p>
+        {/* Current Power Display */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-green-500/20 mb-12 text-center"
+        >
+          <div className="flex items-center justify-center space-x-4 mb-4">
+            <FaBolt className="text-4xl text-green-500" />
+            <h2 className="text-2xl font-semibold">Total Power Usage</h2>
           </div>
+          <p className="text-5xl font-bold text-green-500">{totalPower} W</p>
+        </motion.div>
 
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            {features.map((feature, index) => (
-              <div key={index} className="bg-gray-900 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-gray-300">{feature.description}</p>
+        {/* Device Control Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="space-y-6"
+        >
+          <h2 className="text-2xl font-bold mb-6 text-center">Device Control</h2>
+          {devices.map((device) => (
+            <motion.div
+              key={device.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20 hover:border-green-500/50 transition-all duration-300"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="text-3xl text-green-500">{device.icon}</div>
+                  <div>
+                    <h3 className="text-xl font-semibold">{device.name}</h3>
+                    <p className="text-gray-400">Power: {device.power}W</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => toggleDevice(device.id)}
+                  className={`px-6 py-3 rounded-lg transition-all duration-300 ${
+                    device.status 
+                      ? 'bg-green-500 hover:bg-green-600' 
+                      : 'bg-gray-600 hover:bg-gray-700'
+                  } text-white font-semibold`}
+                >
+                  {device.status ? 'ON' : 'OFF'}
+                </button>
               </div>
-            ))}
-          </div>
+            </motion.div>
+          ))}
+        </motion.div>
 
-          {/* How It Works */}
-          <div className="bg-gray-900 rounded-xl p-8 shadow-lg mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">How It Works</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="text-4xl mb-4">1</div>
-                <h3 className="text-xl font-bold mb-2">Install</h3>
-                <p className="text-gray-300">Easy installation of our energy monitoring devices</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl mb-4">2</div>
-                <h3 className="text-xl font-bold mb-2">Monitor</h3>
-                <p className="text-gray-300">Track your energy usage in real-time</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl mb-4">3</div>
-                <h3 className="text-xl font-bold mb-2">Optimize</h3>
-                <p className="text-gray-300">Automatically optimize your energy consumption</p>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA Section */}
-          <div className="text-center">
-            <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
-            <p className="text-xl text-gray-300 mb-8">
-              Join thousands of homeowners who are already saving on their energy bills.
-            </p>
-            <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300">
-              Get Started Now
-            </button>
-          </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      
+        {/* Quick Tips */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-12 bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20"
+        >
+          <h2 className="text-xl font-bold mb-4 text-center">Quick Tips</h2>
+          <ul className="space-y-3 text-gray-300">
+            <li className="flex items-center space-x-2">
+              <span className="text-green-500">•</span>
+              <span>Turn off devices when not in use to save energy</span>
+            </li>
+            <li className="flex items-center space-x-2">
+              <span className="text-green-500">•</span>
+              <span>Use energy-efficient settings for optimal consumption</span>
+            </li>
+            <li className="flex items-center space-x-2">
+              <span className="text-green-500">•</span>
+              <span>Monitor power usage to identify energy-hungry devices</span>
+            </li>
+          </ul>
+        </motion.div>
+      </div>
     </div>
   );
 };

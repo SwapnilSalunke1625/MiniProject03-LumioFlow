@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaBolt, FaHome, FaBox, FaChartLine, FaBook, FaInfoCircle, FaSignInAlt } from 'react-icons/fa';
 import logo from '../assets/icons/logo.png';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  const navLinks = [
+    { path: '/', label: 'Home', icon: <FaHome /> },
+    { path: '/products', label: 'Products', icon: <FaBox /> },
+    { path: '/energy-management', label: 'Energy Management', icon: <FaChartLine /> },
+    { path: '/resources', label: 'Resources', icon: <FaBook /> },
+    { path: '/about', label: 'About', icon: <FaInfoCircle /> }
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,38 +26,90 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { path: '/', label: 'HOME' },
-    { path: '/products', label: 'PRODUCTS' },
-    { path: '/energy-management', label: 'HOME ENERGY MANAGEMENT' },
-    { path: '/resources', label: 'RESOURCES' },
-    { path: '/about', label: 'ABOUT' }
-  ];
+  const navbarVariants = {
+    hidden: { y: -100, opacity: 0 },
+    visible: { 
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20
+      }
+    }
+  };
 
-  const isActive = (path) => location.pathname === path;
+  const menuVariants = {
+    closed: {
+      opacity: 0,
+      x: "100%",
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      }
+    },
+    open: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      }
+    }
+  };
 
   return (
     <motion.nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black/90 backdrop-blur-md shadow-lg' : 'bg-transparent'
+      initial="hidden"
+      animate="visible"
+      variants={navbarVariants}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled 
+          ? 'bg-black/90 backdrop-blur-xl shadow-2xl shadow-green-500/10' 
+          : 'bg-transparent'
       }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/">
+          <Link to="/" className="flex items-center space-x-3 group">
             <motion.div
-              className="flex items-center"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2 }}
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative"
             >
-              <img src={logo} alt="Logo" className="w-12 h-auto" />
-              <span className="ml-3 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+              <motion.img
+                src={logo}
+                alt="LumioFlow"
+                className="h-10 w-10 filter drop-shadow-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              />
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500 rounded-full opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300"
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <motion.span 
+                className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500"
+                whileHover={{ scale: 1.05 }}
+              >
                 LumioFlow
-              </span>
+              </motion.span>
+              <motion.div
+                className="h-0.5 w-0 bg-gradient-to-r from-green-400 to-blue-500 rounded-full"
+                whileHover={{ width: '100%' }}
+                transition={{ duration: 0.3 }}
+              />
             </motion.div>
           </Link>
 
@@ -58,59 +119,76 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`relative text-sm font-semibold transition-colors duration-300 ${
-                  isActive(link.path)
+                className={`relative group ${
+                  location.pathname === link.path
                     ? 'text-green-400'
-                    : 'text-gray-300 hover:text-green-400'
+                    : 'text-gray-300 hover:text-white'
                 }`}
               >
-                {link.label}
-                {isActive(link.path) && (
-                  <motion.div
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-green-400 to-blue-500"
-                    layoutId="navbar-underline"
+                <span className="relative flex items-center space-x-2 text-sm font-medium tracking-wide">
+                  <span className="text-lg">{link.icon}</span>
+                  <span>{link.label}</span>
+                  <motion.span
+                    className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-blue-500"
+                    initial={{ width: 0 }}
+                    animate={{ 
+                      width: location.pathname === link.path ? '100%' : 0 
+                    }}
+                    whileHover={{ width: '100%' }}
                     transition={{ duration: 0.3 }}
                   />
-                )}
+                  <motion.div
+                    className="absolute -inset-1 bg-gradient-to-r from-green-400/20 to-blue-500/20 rounded-lg opacity-0 group-hover:opacity-100 blur transition-opacity duration-300"
+                    initial={{ scale: 0.8 }}
+                    whileHover={{ scale: 1 }}
+                  />
+                </span>
               </Link>
             ))}
-          </div>
-
-          {/* CTA Button */}
-          <motion.div
-            className="hidden md:block"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link
-              to="/signin"
-              className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-green-500/25"
+            <motion.button
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: "0 0 20px rgba(34, 197, 94, 0.3)"
+              }}
+              whileTap={{ scale: 0.95 }}
+              className="relative overflow-hidden bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-2.5 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2"
             >
-              LOGIN
-            </Link>
-          </motion.div>
+              <FaSignInAlt className="text-lg" />
+              <span className="relative z-10">Sign In</span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-blue-500 to-green-500 opacity-0 hover:opacity-100 transition-opacity duration-300"
+                initial={{ x: "-100%" }}
+                whileHover={{ x: 0 }}
+              />
+            </motion.button>
+          </div>
 
           {/* Mobile Menu Button */}
           <motion.button
-            className="md:hidden text-white p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             whileTap={{ scale: 0.95 }}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden text-white p-2 relative"
           >
-            <div className="w-6 h-5 relative flex flex-col justify-between">
+            <div className="w-6 h-6 flex flex-col justify-around">
               <motion.span
-                className={`w-full h-0.5 bg-white rounded-full transform origin-left transition-all duration-300 ${
-                  isMobileMenuOpen ? 'rotate-45' : ''
-                }`}
+                animate={{
+                  rotate: isMobileMenuOpen ? 45 : 0,
+                  y: isMobileMenuOpen ? 8 : 0,
+                }}
+                className="w-full h-0.5 bg-gradient-to-r from-green-400 to-blue-500 rounded-full"
               />
               <motion.span
-                className={`w-full h-0.5 bg-white rounded-full transition-all duration-300 ${
-                  isMobileMenuOpen ? 'opacity-0' : ''
-                }`}
+                animate={{
+                  opacity: isMobileMenuOpen ? 0 : 1,
+                }}
+                className="w-full h-0.5 bg-gradient-to-r from-green-400 to-blue-500 rounded-full"
               />
               <motion.span
-                className={`w-full h-0.5 bg-white rounded-full transform origin-left transition-all duration-300 ${
-                  isMobileMenuOpen ? '-rotate-45' : ''
-                }`}
+                animate={{
+                  rotate: isMobileMenuOpen ? -45 : 0,
+                  y: isMobileMenuOpen ? -8 : 0,
+                }}
+                className="w-full h-0.5 bg-gradient-to-r from-green-400 to-blue-500 rounded-full"
               />
             </div>
           </motion.button>
@@ -121,48 +199,39 @@ const Navbar = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="md:hidden bg-black/95 backdrop-blur-md"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={menuVariants}
+            className="md:hidden fixed top-20 right-0 w-72 h-screen bg-gray-900/95 backdrop-blur-xl shadow-2xl shadow-green-500/10"
           >
-            <div className="px-6 py-4 space-y-4">
+            <div className="flex flex-col p-6 space-y-4">
               {navLinks.map((link) => (
-                <motion.div
-                  key={link.path}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Link
-                    to={link.path}
-                    className={`block py-2 text-sm font-semibold transition-colors duration-300 ${
-                      isActive(link.path)
-                        ? 'text-green-400'
-                        : 'text-gray-300 hover:text-green-400'
-                    }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2, delay: 0.1 }}
-              >
                 <Link
-                  to="/signin"
-                  className="block w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold py-2 px-6 rounded-xl text-center transition-all duration-300 shadow-lg hover:shadow-green-500/25"
+                  key={link.path}
+                  to={link.path}
                   onClick={() => setIsMobileMenuOpen(false)}
+                  className={`px-4 py-3 rounded-lg transition-all duration-300 flex items-center space-x-3 ${
+                    location.pathname === link.path
+                      ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-lg shadow-green-500/25'
+                      : 'text-gray-300 hover:bg-gray-800/50 hover:text-white'
+                  }`}
                 >
-                  LOGIN
+                  <span className="text-lg">{link.icon}</span>
+                  <span className="font-medium">{link.label}</span>
                 </Link>
-              </motion.div>
+              ))}
+              <motion.button
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: "0 0 20px rgba(34, 197, 94, 0.3)"
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="mt-4 bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-3 rounded-lg font-medium shadow-lg shadow-green-500/25 transition-all duration-300 flex items-center justify-center space-x-2"
+              >
+                <FaSignInAlt className="text-lg" />
+                <span>Sign In</span>
+              </motion.button>
             </div>
           </motion.div>
         )}
