@@ -2,30 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import logo from "../assets/icons/logo.png";
-import LoadingSpinner from '../Components/LoadingSpinner';
+// import LoadingSpinner from '../Components/LoadingSpinner';
 
 const Home = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Simulate loading time for demo purposes
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+  // useEffect(() => {
+  //   // Simulate loading time for demo purposes
+  //   const timer = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1500);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner size="lg" color="green" className="mb-4" />
-          <h2 className="text-xl font-semibold text-white">Loading LumioFlow...</h2>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="min-h-screen bg-black flex items-center justify-center">
+  //       <div className="text-center">
+  //         <LoadingSpinner size="lg" color="green" className="mb-4" />
+  //         <h2 className="text-xl font-semibold text-white">Loading LumioFlow...</h2>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   const features = [
     {

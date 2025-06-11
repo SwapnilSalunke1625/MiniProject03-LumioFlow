@@ -58,20 +58,13 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`relative text-sm font-semibold transition-colors duration-300 ${
+                className={`text-sm font-semibold transition-colors duration-300 ${
                   isActive(link.path)
                     ? 'text-green-400'
                     : 'text-gray-300 hover:text-green-400'
                 }`}
               >
                 {link.label}
-                {isActive(link.path) && (
-                  <motion.div
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-green-400 to-blue-500"
-                    layoutId="navbar-underline"
-                    transition={{ duration: 0.3 }}
-                  />
-                )}
               </Link>
             ))}
           </div>

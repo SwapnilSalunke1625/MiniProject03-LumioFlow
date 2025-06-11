@@ -12,6 +12,7 @@ import About from "./Pages/About"
 import Layout from './Components/Layout';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
+import LoadingSpinner from './Components/LoadingSpinner'
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -56,6 +57,8 @@ export default function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <Navbar/>
+        <LoadingSpinner/>
+
         <Routes>      
           <Route path="/" element={<Home />} />        
           <Route path="/signin" element={<AdminSignIn />} />
