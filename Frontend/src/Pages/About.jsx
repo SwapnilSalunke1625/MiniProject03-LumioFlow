@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaBolt, FaMicrochip, FaChartLine, FaShieldAlt, FaUsers, FaLightbulb, FaUserGraduate } from 'react-icons/fa';
+import { FaBolt, FaMicrochip, FaChartLine, FaShieldAlt, FaUsers, FaLightbulb, FaUserGraduate, FaGithub, FaLinkedin, FaTwitter, FaAward, FaRocket, FaHandshake } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const About = () => {
   const features = [
@@ -40,17 +41,53 @@ const About = () => {
     {
       name: "Swapnil Salunke",
       role: "Project Lead",
-      icon: <FaUserGraduate className="text-4xl text-green-500" />
+      image: "https://via.placeholder.com/150",
+      social: {
+        github: "#",
+        linkedin: "#",
+        twitter: "#"
+      },
+      bio: "Passionate about IoT and energy management solutions"
     },
     {
       name: "Vishal Dhangare",
       role: "UI Developer",
-      icon: <FaUserGraduate className="text-4xl text-blue-500" />
+      image: "https://via.placeholder.com/150",
+      social: {
+        github: "#",
+        linkedin: "#",
+        twitter: "#"
+      },
+      bio: "Expert in modern web technologies and user experience"
     },
     {
       name: "Laxmikant Tawde",
       role: "Backend Developer",
-      icon: <FaUserGraduate className="text-4xl text-purple-500" />
+      image: "https://via.placeholder.com/150",
+      social: {
+        github: "#",
+        linkedin: "#",
+        twitter: "#"
+      },
+      bio: "Specialized in scalable backend systems and IoT integration"
+    }
+  ];
+
+  const achievements = [
+    {
+      icon: <FaAward className="text-4xl text-yellow-500" />,
+      title: "Innovation Award",
+      description: "Recognized for innovative energy monitoring solution"
+    },
+    {
+      icon: <FaRocket className="text-4xl text-blue-500" />,
+      title: "Rapid Growth",
+      description: "Serving 1000+ customers worldwide"
+    },
+    {
+      icon: <FaHandshake className="text-4xl text-green-500" />,
+      title: "Industry Partnerships",
+      description: "Collaborating with leading energy companies"
     }
   ];
 
@@ -62,15 +99,18 @@ const About = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-16 relative"
         >
-          <br /><br />
-          <h1 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
-            About LumioFlow
-          </h1>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Revolutionizing energy monitoring with ESP32-based smart solutions for homes and businesses
-          </p>
+          <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 via-blue-500/10 to-purple-500/10 rounded-3xl blur-3xl" />
+          <div className="relative">
+            <br /><br />
+            <h1 className="text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-blue-500 to-purple-500">
+              About LumioFlow
+            </h1>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Revolutionizing energy monitoring with ESP32-based smart solutions for homes and businesses
+            </p>
+          </div>
         </motion.div>
 
         {/* Mission Statement */}
@@ -78,15 +118,18 @@ const About = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-green-500/20 mb-16"
+          className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-green-500/20 mb-16 relative overflow-hidden"
         >
-          <h2 className="text-3xl font-bold mb-6 text-center">Our Mission</h2>
-          <p className="text-lg text-gray-300 text-center max-w-4xl mx-auto">
-            We're dedicated to making energy monitoring accessible, efficient, and intelligent. 
-            By combining the power of ESP32 microcontrollers with advanced sensors, we provide 
-            real-time insights into energy consumption, helping users make informed decisions 
-            about their energy usage and contribute to a more sustainable future.
-          </p>
+          <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-blue-500/5 to-purple-500/5" />
+          <div className="relative">
+            <h2 className="text-3xl font-bold mb-6 text-center">Our Mission</h2>
+            <p className="text-lg text-gray-300 text-center max-w-4xl mx-auto">
+              We're dedicated to making energy monitoring accessible, efficient, and intelligent. 
+              By combining the power of ESP32 microcontrollers with advanced sensors, we provide 
+              real-time insights into energy consumption, helping users make informed decisions 
+              about their energy usage and contribute to a more sustainable future.
+            </p>
+          </div>
         </motion.div>
 
         {/* Features Grid */}
@@ -102,7 +145,7 @@ const About = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-              className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20 hover:border-green-500/50 transition-all duration-300"
+              className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20 hover:border-green-500/50 transition-all duration-300 hover:transform hover:scale-105"
             >
               <div className="text-center">
                 <div className="flex justify-center mb-4">
@@ -110,6 +153,32 @@ const About = () => {
                 </div>
                 <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
                 <p className="text-gray-400">{feature.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Achievements Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+        >
+          {achievements.map((achievement, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+              className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20 hover:border-green-500/50 transition-all duration-300"
+            >
+              <div className="text-center">
+                <div className="flex justify-center mb-4">
+                  {achievement.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-3">{achievement.title}</h3>
+                <p className="text-gray-400">{achievement.description}</p>
               </div>
             </motion.div>
           ))}
@@ -176,13 +245,31 @@ const About = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20 hover:border-green-500/50 transition-all duration-300 text-center"
+                className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20 hover:border-green-500/50 transition-all duration-300 text-center group"
               >
-                <div className="flex justify-center mb-4">
-                  {member.icon}
+                <div className="relative mb-4">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-32 h-32 rounded-full mx-auto object-cover border-2 border-green-500/20 group-hover:border-green-500/50 transition-all duration-300"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="flex space-x-4">
+                      <a href={member.social.github} className="text-gray-400 hover:text-white transition-colors">
+                        <FaGithub className="text-2xl" />
+                      </a>
+                      <a href={member.social.linkedin} className="text-gray-400 hover:text-white transition-colors">
+                        <FaLinkedin className="text-2xl" />
+                      </a>
+                      <a href={member.social.twitter} className="text-gray-400 hover:text-white transition-colors">
+                        <FaTwitter className="text-2xl" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
                 <h3 className="text-xl font-bold mb-2">{member.name}</h3>
-                <p className="text-green-400">{member.role}</p>
+                <p className="text-green-400 mb-3">{member.role}</p>
+                <p className="text-gray-400 text-sm">{member.bio}</p>
               </motion.div>
             ))}
           </div>
@@ -199,12 +286,12 @@ const About = () => {
           <p className="text-gray-400 mb-8">
             Have questions about our ESP32 energy monitoring system? We'd love to hear from you.
           </p>
-          <a
-            href="#"
-            className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300"
+          <Link
+            to="/contact"
+            className="inline-block bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
           >
             Contact Us
-          </a>
+          </Link>
         </motion.div>
       </div>
     </div>
