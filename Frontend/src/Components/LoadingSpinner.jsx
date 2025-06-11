@@ -8,7 +8,7 @@ const LoadingSpinner = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const timeout = setTimeout(() => setIsLoading(false), 1500); // simulate load time
+    const timeout = setTimeout(() => setIsLoading(false), 1000); // simulate load time
     return () => clearTimeout(timeout);
   }, [location.pathname]);
 
@@ -27,7 +27,7 @@ const LoadingSpinner = () => {
             animate={{ width: '100%' }}
             exit={{ width: '100%' }}
             transition={{
-              duration: 0.2,
+              duration: 0.8,
               ease: 'easeInOut',
             }}
           />

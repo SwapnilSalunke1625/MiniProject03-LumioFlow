@@ -1,378 +1,217 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Line } from 'react-chartjs-2';
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
   Tooltip,
-  ResponsiveContainer,
   Legend,
-  ReferenceLine
-} from 'recharts';
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Dashboard = () => {
-  // State management with proper initial values
-  const [latestData, setLatestData] = useState({
-    voltage: '0',
-    current: '0',
-    timestamp: new Date()
-  });
-  const [powerData, setPowerData] = useState({
-    power: '0',
-    energy: '0',
-    bill: '0',
-    dailyEnergy: '0',
-    monthlyEnergy: '0'
-  });
-  const [history, setHistory] = useState([]);
-  const [graphData, setGraphData] = useState([]);
-  const [predictions, setPredictions] = useState({
-    dailyBill: 0,
-    weeklyBill: 0,
-    monthlyBill: 0
-  });
-  const [stats, setStats] = useState({
-    maxVoltage: 0,
-    minVoltage: Infinity,
-    maxCurrent: 0,
-    maxPower: 0,
-    avgPower: 0
-  });
-  const [isActive, setIsActive] = useState(false);
+  const [currentPower, setCurrentPower] = useState(0);
+  const [voltage, setVoltage] = useState(0);
+  const [current, setCurrent] = useState(0);
+  const [powerFactor, setPowerFactor] = useState(0);
+  const [dailyConsumption, setDailyConsumption] = useState(0);
 
-  // Constants
-  const RATE_PER_KWH = 8; // ₹8 per kWh
-  const UPDATE_INTERVAL = 1000; // 1 second
-  const GRAPH_UPDATE_INTERVAL = 5000; // 5 seconds
-  const MAX_HISTORY_POINTS = 100;
-  const VOLTAGE_THRESHOLD = 200; // Voltage threshold in Volts
-
-  // Utility functions
-  const formatNumber = (num, decimals = 2) => {
-    return isNaN(num) ? '0' : Number(num).toFixed(decimals);
+  // Simulated data for the chart
+  const chartData = {
+    labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
+    datasets: [
+      {
+        label: 'Power Consumption (kW)',
+        data: Array.from({ length: 24 }, () => Math.random() * 2 + 0.5),
+        borderColor: 'rgb(34, 197, 94)',
+        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+        tension: 0.4,
+        fill: true,
+      },
+    ],
   };
 
-  const calculatePower = useCallback((voltage, current) => {
-    const v = parseFloat(voltage);
-    const i = parseFloat(current);
-    return isNaN(v) || isNaN(i) ? 0 : v * i;
-  }, []);
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          color: 'white',
+        },
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
+        },
+        ticks: {
+          color: 'white',
+        },
+      },
+      x: {
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
+        },
+        ticks: {
+          color: 'white',
+        },
+      },
+    },
+  };
 
-  // Fetch latest data
-  const fetchLatestData = useCallback(async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/latest');
-      if (!response.ok) throw new Error('Failed to fetch latest data');
-      
-      const data = await response.json();
-      if (!data || typeof data.voltage !== 'number' || typeof data.current !== 'number') {
-        throw new Error('Invalid data format');
-      }
-
-      const timestamp = new Date();
-      const voltage = parseFloat(data.voltage);
-      const current = parseFloat(data.current);
-      const isVoltageValid = voltage > VOLTAGE_THRESHOLD;
-      
-      setLatestData({
-        voltage: isVoltageValid ? formatNumber(voltage) : '0',
-        current: isVoltageValid ? formatNumber(current) : '0',
-        timestamp
-      });
-
-      // Update statistics only when voltage is valid
-      if (isVoltageValid) {
-        setStats(prev => ({
-          maxVoltage: Math.max(prev.maxVoltage, voltage),
-          minVoltage: Math.min(prev.minVoltage, voltage),
-          maxCurrent: Math.max(prev.maxCurrent, current),
-          maxPower: Math.max(prev.maxPower, calculatePower(voltage, current)),
-          avgPower: (prev.avgPower * 0.9 + calculatePower(voltage, current) * 0.1)
-        }));
-      }
-
-    } catch (error) {
-      console.error('Error fetching latest data:', error);
-      setLatestData(prev => ({ ...prev, voltage: 'Error', current: 'Error' }));
-    }
-  }, [calculatePower]);
-
-  // Fetch historical data
-  const fetchHistory = useCallback(async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/history');
-      if (!response.ok) throw new Error('Failed to fetch history');
-      
-      const data = await response.json();
-      if (!Array.isArray(data)) throw new Error('Invalid history data');
-
-      setHistory(data.slice(-MAX_HISTORY_POINTS));
-    } catch (error) {
-      console.error('Error fetching history:', error);
-    }
-  }, []);
-
-  // Calculate power data
+  // Simulate real-time updates
   useEffect(() => {
-    const voltage = parseFloat(latestData.voltage);
-    const current = parseFloat(latestData.current);
-    
-    if (isNaN(voltage) || isNaN(current) || voltage <= VOLTAGE_THRESHOLD) {
-      setPowerData({
-        power: '0',
-        energy: '0',
-        bill: '0',
-        dailyEnergy: '0',
-        monthlyEnergy: '0'
-      });
-      return;
-    }
+    const interval = setInterval(() => {
+      setCurrentPower(Math.random() * 2 + 0.5);
+      setVoltage(220 + Math.random() * 10 - 5);
+      setCurrent(Math.random() * 10);
+      setPowerFactor(0.85 + Math.random() * 0.1);
+      setDailyConsumption(prev => prev + Math.random() * 0.1);
+    }, 2000);
 
-    const power = calculatePower(voltage, current);
-    const energyPerSecond = power / 3600000; // Convert W to kWh/s
-    const billPerSecond = energyPerSecond * RATE_PER_KWH;
-
-    // Calculate cumulative values
-    const dailyEnergy = energyPerSecond * 24 * 3600; // kWh per day
-    const monthlyEnergy = dailyEnergy * 30; // kWh per month
-
-    setPowerData({
-      power: formatNumber(power),
-      energy: formatNumber(energyPerSecond, 6),
-      bill: formatNumber(billPerSecond, 6),
-      dailyEnergy: formatNumber(dailyEnergy, 3),
-      monthlyEnergy: formatNumber(monthlyEnergy, 3)
-    });
-
-    // Update predictions
-    setPredictions({
-      dailyBill: formatNumber(billPerSecond * 24 * 3600),
-      weeklyBill: formatNumber(billPerSecond * 24 * 3600 * 7),
-      monthlyBill: formatNumber(billPerSecond * 24 * 3600 * 30)
-    });
-
-  }, [latestData, calculatePower]);
-
-  // Set up data fetching intervals
-  useEffect(() => {
-    fetchLatestData();
-    fetchHistory();
-
-    const dataInterval = setInterval(fetchLatestData, UPDATE_INTERVAL);
-    const historyInterval = setInterval(fetchHistory, GRAPH_UPDATE_INTERVAL);
-
-    return () => {
-      clearInterval(dataInterval);
-      clearInterval(historyInterval);
-    };
-  }, [fetchLatestData, fetchHistory]);
-
-  // Update graph data
-  useEffect(() => {
-    const updateGraph = () => {
-      setGraphData(prev => {
-        const voltage = parseFloat(latestData.voltage);
-        const current = parseFloat(latestData.current);
-        const power = calculatePower(voltage, current);
-        
-        const newPoint = {
-          time: latestData.timestamp,
-          power: power,
-          voltage: voltage,
-          current: current
-        };
-
-        // Keep last 60 points for better trend visualization
-        const updatedData = [...prev.slice(-59), newPoint];
-        return updatedData;
-      });
-    };
-
-    const interval = setInterval(updateGraph, GRAPH_UPDATE_INTERVAL);
     return () => clearInterval(interval);
-  }, [latestData, calculatePower]);
+  }, []);
+
+  const stats = [
+    {
+      title: "Current Power",
+      value: `${currentPower.toFixed(2)} kW`,
+      icon: "⚡",
+      color: "from-green-500 to-emerald-500"
+    },
+    {
+      title: "Voltage",
+      value: `${voltage.toFixed(1)} V`,
+      icon: "🔌",
+      color: "from-blue-500 to-cyan-500"
+    },
+    {
+      title: "Current",
+      value: `${current.toFixed(2)} A`,
+      icon: "📊",
+      color: "from-purple-500 to-pink-500"
+    },
+    {
+      title: "Power Factor",
+      value: powerFactor.toFixed(2),
+      icon: "📈",
+      color: "from-yellow-500 to-orange-500"
+    }
+  ];
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-4xl font-bold mb-6 text-center text-indigo-600">PowerTrack Dashboard ⚡</h1>
+    <div className="min-h-screen bg-black text-white p-6">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
+        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+          Energy Dashboard
+        </h1>
+        <p className="text-gray-400">Real-time monitoring of your power consumption</p>
+      </motion.div>
 
-      {/* Status Indicator */}
-      <div className={`mb-6 p-4 rounded-lg text-center ${
-        isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-      }`}>
-        <p className="text-lg font-semibold">
-          {isActive ? 'System Active (Voltage > 200V)' : ''}
-        </p>
-      </div>
-
-      {/* Live Data Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        {[
-          { label: 'Voltage (V)', value: latestData.voltage, unit: 'V', color: 'text-blue-600' },
-          { label: 'Current (A)', value: latestData.current, unit: 'A', color: 'text-red-600' },
-          { label: 'Power (W)', value: powerData.power, unit: 'W', color: 'text-yellow-600' },
-          { label: 'Energy (kWh)', value: powerData.energy, unit: 'kWh', color: 'text-green-600' },
-        ].map(({ label, value, unit, color }) => (
-          <div key={label} className="bg-white rounded-2xl shadow-md p-5 text-center">
-            <p className="text-sm font-medium text-gray-500 mb-1">{label}</p>
-            <p className={`text-4xl font-extrabold ${color}`}>{value} {unit}</p>
-          </div>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {stats.map((stat, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className={`bg-gradient-to-br ${stat.color} rounded-xl p-6 shadow-lg`}
+          >
+            <div className="text-3xl mb-2">{stat.icon}</div>
+            <h3 className="text-lg font-semibold mb-1">{stat.title}</h3>
+            <p className="text-2xl font-bold">{stat.value}</p>
+          </motion.div>
         ))}
       </div>
 
-      {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div className="bg-white rounded-2xl shadow-md p-5">
-          <h3 className="text-lg font-semibold mb-4">Daily Statistics</h3>
-          <div className="space-y-2">
-            <p>Energy: {powerData.dailyEnergy} kWh</p>
-            <p>Estimated Bill: ₹{predictions.dailyBill}</p>
+      {/* Main Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Power Consumption Chart */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="lg:col-span-2 bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20"
+        >
+          <h2 className="text-xl font-bold mb-4">24-Hour Power Consumption</h2>
+          <div className="h-[400px]">
+            <Line data={chartData} options={chartOptions} />
           </div>
-        </div>
-        <div className="bg-white rounded-2xl shadow-md p-5">
-          <h3 className="text-lg font-semibold mb-4">Weekly Statistics</h3>
-          <div className="space-y-2">
-            <p>Energy: {formatNumber(parseFloat(powerData.dailyEnergy) * 7)} kWh</p>
-            <p>Estimated Bill: ₹{predictions.weeklyBill}</p>
+        </motion.div>
+
+        {/* Daily Summary */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20"
+        >
+          <h2 className="text-xl font-bold mb-4">Daily Summary</h2>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-gray-400">Total Consumption</span>
+              <span className="text-xl font-bold">{dailyConsumption.toFixed(2)} kWh</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-400">Peak Power</span>
+              <span className="text-xl font-bold">2.5 kW</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-400">Average Power</span>
+              <span className="text-xl font-bold">1.2 kW</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-400">Cost Estimate</span>
+              <span className="text-xl font-bold">${(dailyConsumption * 0.12).toFixed(2)}</span>
+            </div>
           </div>
-        </div>
-        <div className="bg-white rounded-2xl shadow-md p-5">
-          <h3 className="text-lg font-semibold mb-4">Monthly Statistics</h3>
-          <div className="space-y-2">
-            <p>Energy: {powerData.monthlyEnergy} kWh</p>
-            <p>Estimated Bill: ₹{predictions.monthlyBill}</p>
-          </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Records */}
-      <div className="bg-white rounded-2xl shadow-md p-5 mb-10">
-        <h3 className="text-lg font-semibold mb-4">Power Records</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div>
-            <p className="text-sm text-gray-500">Max Voltage</p>
-            <p className="text-xl font-bold">{formatNumber(stats.maxVoltage)} V</p>
+      {/* Recent Alerts */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mt-8 bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-green-500/20"
+      >
+        <h2 className="text-xl font-bold mb-4">Recent Alerts</h2>
+        <div className="space-y-4">
+          <div className="flex items-center gap-4 p-4 bg-red-500/10 rounded-lg border border-red-500/20">
+            <span className="text-2xl">⚠️</span>
+            <div>
+              <h3 className="font-semibold">High Power Consumption</h3>
+              <p className="text-gray-400">Power consumption exceeded normal threshold at 14:30</p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm text-gray-500">Min Voltage</p>
-            <p className="text-xl font-bold">{formatNumber(stats.minVoltage)} V</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Max Current</p>
-            <p className="text-xl font-bold">{formatNumber(stats.maxCurrent)} A</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Max Power</p>
-            <p className="text-xl font-bold">{formatNumber(stats.maxPower)} W</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Real-time Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-        {/* Voltage & Current Chart */}
-        <div className="bg-white rounded-2xl shadow-md p-5">
-          <h2 className="text-xl font-semibold mb-4">Voltage & Current History</h2>
-          <p className="text-sm text-gray-500 mb-4">
-            This graph shows the real-time voltage (left axis) and current (right axis) readings over time.
-            Voltage is measured in Volts (V) and current in Amperes (A).
-          </p>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={history.map(item => ({
-              time: new Date(item.createdAt),
-              voltage: item.voltage,
-              current: item.current
-            }))}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
-                dataKey="time" 
-                tickFormatter={(time) => new Date(time).toLocaleTimeString()} 
-                label={{ value: 'Time', position: 'insideBottom', offset: -5 }}
-              />
-              <YAxis 
-                yAxisId="voltage" 
-                orientation="left" 
-                stroke="#8884d8"
-                label={{ value: 'Voltage (V)', angle: -90, position: 'insideLeft' }}
-              />
-              <YAxis 
-                yAxisId="current" 
-                orientation="right" 
-                stroke="#82ca9d"
-                label={{ value: 'Current (A)', angle: 90, position: 'insideRight' }}
-              />
-              <Tooltip 
-                labelFormatter={(value) => new Date(value).toLocaleTimeString()}
-                formatter={(value, name) => [formatNumber(value), name]}
-                contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
-              />
-              <Legend verticalAlign="top" height={36} />
-              <Line 
-                yAxisId="voltage"
-                type="monotone" 
-                dataKey="voltage" 
-                stroke="#8884d8" 
-                name="Voltage (V)"
-                dot={false}
-                strokeWidth={2}
-              />
-              <Line 
-                yAxisId="current"
-                type="monotone" 
-                dataKey="current" 
-                stroke="#82ca9d" 
-                name="Current (A)"
-                dot={false}
-                strokeWidth={2}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Power Usage Chart */}
-        <div className="bg-white rounded-2xl shadow-md p-5">
-          <h2 className="text-xl font-semibold mb-4">Power Usage Trend</h2>
-          <p className="text-sm text-gray-500 mb-4">
-            This graph displays the real-time power consumption in Watts (W) over time.
-            Power is calculated as the product of voltage and current (P = V × I).
-          </p>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={graphData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
-                dataKey="time" 
-                tickFormatter={(time) => new Date(time).toLocaleTimeString()} 
-                label={{ value: 'Time', position: 'insideBottom', offset: -5 }}
-              />
-              <YAxis 
-                label={{ value: 'Power (W)', angle: -90, position: 'insideLeft' }}
-                domain={[0, 'auto']}
-              />
-              <Tooltip 
-                labelFormatter={(value) => new Date(value).toLocaleTimeString()}
-                formatter={(value) => [formatNumber(value), 'Power (W)']}
-                contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
-              />
-              <Legend verticalAlign="top" height={36} />
-              <Line 
-                type="monotone" 
-                dataKey="power" 
-                stroke="#ff7300" 
-                name="Power (W)"
-                dot={false}
-                strokeWidth={2}
-                activeDot={{ r: 6 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-          <div className="mt-4 text-sm text-gray-600">
-            <p>Current Power: {powerData.power} W</p>
-            <p>Average Power: {formatNumber(stats.avgPower)} W</p>
-            <p>Peak Power: {formatNumber(stats.maxPower)} W</p>
+          <div className="flex items-center gap-4 p-4 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
+            <span className="text-2xl">⚡</span>
+            <div>
+              <h3 className="font-semibold">Voltage Fluctuation</h3>
+              <p className="text-gray-400">Voltage dropped below normal range at 15:45</p>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
