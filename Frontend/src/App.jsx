@@ -14,7 +14,7 @@ import Footer from './Components/Footer';
 import LoadingSpinner from './Components/LoadingSpinner'
 import AdminSignIn  from './Pages/AdminSignIn';
 import AdminSignUp from './Pages/AdminSignUp';
-
+import Dashboard from './Pages/dashboard';
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -67,7 +67,7 @@ export default function App() {
           <Route path="/signup" element={<AdminSignUp />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/energy-management" element={<EnergyManagement />} />
+          <Route path="/energy-management" element={<Dashboard />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

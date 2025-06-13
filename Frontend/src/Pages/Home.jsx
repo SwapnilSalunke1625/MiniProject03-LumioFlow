@@ -6,6 +6,7 @@ import FeaturesSection from '../Components/FeaturesSection';
 import StatsSection from '../Components/StatsSection';
 import TestimonialsSection from '../Components/TestimonialsSection';
 import HowItWorksSection from '../Components/HowItWorksSection';
+// import ChatWidget from '../Components/ChatWidget';
 // import LoadingSpinner from '../Components/LoadingSpinner';
 // import LoadingSpinner from '../Components/LoadingSpinner';
 
@@ -33,7 +34,7 @@ const Home = () => {
   // }
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
+    <div className="min-h-screen bg-black text-white">
       {/* Animated Background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black opacity-50"></div>
@@ -73,6 +74,7 @@ const Home = () => {
         <StatsSection />
         <TestimonialsSection />
         <HowItWorksSection />
+        {/* <ChatWidget /> */}
       </motion.div>
     </div>
   );

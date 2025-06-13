@@ -62,10 +62,13 @@ const AuthPopup = ({ isOpen, onClose }) => {
         email: signInData.email,
         password: signInData.password,
       });
-
+      console.log(response)
       const { token, user } = response.data.data;
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", response.data.data.accessToken);
       localStorage.setItem("user", JSON.stringify(user));
+      
+      // Dispatch a custom event to notify about login
+      window.dispatchEvent(new Event('userLogin'));
       
       onClose();
       navigate("/");
