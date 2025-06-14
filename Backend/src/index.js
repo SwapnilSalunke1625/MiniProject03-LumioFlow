@@ -10,19 +10,34 @@ dotenv.config({
 })
 
 // Enable CORS for all routes
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Parse JSON bodies
 app.use(express.json());
 
+// Mount routes before starting server
+app.use('/api/power', powerRoutes);
+
+// Add a basic test route
+app.get('/test', (req, res) => {
+    res.json({ message: 'Server is running!' });
+});
+
 connectDB()
 .then(()=>{
-    app.listen(process.env.PORT || 7000, '0.0.0.0', ()=>{
-        console.log(`Server is running at port ${process.env.PORT || 7000}`)
+    const PORT = process.env.PORT || 8000;
+    app.listen(PORT, '0.0.0.0', ()=>{
+        console.log(`🚀 Server is running at http://localhost:${PORT}`);
+        console.log(`🌐 Server is accessible at http://192.168.235.50:${PORT}`);
+        console.log(`📡 API endpoints:`);
+        console.log(`   - http://localhost:${PORT}/test`);
+        console.log(`   - http://localhost:${PORT}/api/power/test`);
     })
 })
 .catch((error)=>{
-    console.log("MONGODB connection is failed !!! ", error)
+    console.log("❌ MONGODB connection failed! ", error)
 })
-
-app.use('/api', powerRoutes);

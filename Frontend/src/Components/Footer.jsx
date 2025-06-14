@@ -50,15 +50,15 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 py-16">
           {/* Company Info */}
           <div className="space-y-6">
-            <Link to="/" className="flex items-center space-x-3">
+            <Link to="/" className="flex items-center">
               <motion.img
                 src={logo}
-                alt="LumioFlow"
+                alt="LumioFlow Logo"
                 className="h-10 w-10"
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               />
-              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+              <span className="ml-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-blue-500 to-purple-500">
                 LumioFlow
               </span>
             </Link>

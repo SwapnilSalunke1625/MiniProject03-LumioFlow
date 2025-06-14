@@ -73,7 +73,16 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <img src={logo} alt="LumioFlow" className="h-8 w-auto" />
+              <motion.img
+                src={logo}
+                alt="LumioFlow Logo"
+                className="h-10 w-10"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              />
+              <span className="ml-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-blue-500 to-purple-500">
+                LumioFlow
+              </span>
             </Link>
 
             {/* Navigation Links */}

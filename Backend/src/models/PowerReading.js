@@ -11,7 +11,10 @@ const powerReadingSchema = new mongoose.Schema({
   },
   power: {
     type: Number,
-    required: true
+    required: true,
+    default: function() {
+      return this.voltage * this.current;
+    }
   },
   timestamp: {
     type: Date,

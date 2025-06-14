@@ -7,8 +7,10 @@ const app=express()
 // middleware 
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true
+    origin: '*',  // Allow all origins for development
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
 // as we know that we will get data from anywhere but it doesnot mean that we have to receive unlimited data and all for this
