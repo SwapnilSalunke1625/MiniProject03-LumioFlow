@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Zap, TrendingUp, AlertTriangle, Lightbulb, Leaf, DollarSign, Power, Activity, Eye, EyeOff } from 'lucide-react';
+import { Zap, TrendingUp, AlertTriangle, Lightbulb, Leaf, DollarSign, Power, Activity, Eye, EyeOff, BarChart2, PieChart as PieChartIcon } from 'lucide-react';
 
 const Dashboard = () => {
   const [readings, setReadings] = useState([]);
@@ -371,12 +371,12 @@ const Dashboard = () => {
                 <div className="p-3 rounded-full bg-gradient-to-r from-emerald-300 to-blue-300">
                   <Zap className="w-8 h-8 text-white" />
                 </div>
-                <h1 className="text-5xl font-bold bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+                <h1 className=" text-4xl font-bold bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
                   Energy Dashboard
-                </h1>
+                  </h1>         
                 <br /><br />
               </div>
-              <p className="text-xl text-slate-600">Real-time power consumption monitoring & optimization</p>
+              <p className="text-xl text-slate-600">Real-time power consumption monitoring & optimization</p> 
             </div>
 
             {/* Alerts */}
@@ -472,7 +472,10 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
               {/* Power Consumption Chart */}
               <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200">
-                <h3 className="text-2xl font-bold text-slate-800 mb-6">Power Consumption Timeline</h3>
+                <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                  <BarChart2 className="w-6 h-6 mr-2 text-emerald-500" />
+                  Power Consumption Timeline
+                </h3>
                 <div className="h-96">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={getChartData()}>
@@ -588,7 +591,10 @@ const Dashboard = () => {
 
               {/* Distribution Chart */}
               <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200">
-                <h3 className="text-2xl font-bold text-slate-800 mb-6">Power Distribution</h3>
+                <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                  <PieChartIcon className="w-6 h-6 mr-2 text-emerald-500" />
+                  Power Distribution
+                </h3>
                 <div className="h-96">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>

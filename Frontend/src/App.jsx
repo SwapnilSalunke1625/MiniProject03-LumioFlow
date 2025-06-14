@@ -15,6 +15,7 @@ import LoadingSpinner from './Components/LoadingSpinner'
 import AdminSignIn  from './Pages/AdminSignIn';
 import AdminSignUp from './Pages/AdminSignUp';
 import Dashboard from './Pages/dashboard';
+import ChatWidget from './Components/ChatWidget';
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -73,6 +74,7 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
         </Routes>
         <Footer/>
+        <ChatWidget />
       </BrowserRouter>
     </ErrorBoundary>
   )
