@@ -354,13 +354,13 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-indigo-50 to-slate-200 text-slate-800">
       <br /><br />
       <div className="relative overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-emerald-200 to-blue-200 rounded-full blur-3xl animate-pulse delay-1000"></div>
         </div>
 
         <div className="relative z-10 p-8">
@@ -368,21 +368,15 @@ const Dashboard = () => {
             {/* Header */}
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center space-x-4">
-                <div className="p-3 rounded-full bg-gradient-to-r from-emerald-500 to-blue-500">
+                <div className="p-3 rounded-full bg-gradient-to-r from-emerald-300 to-blue-300">
                   <Zap className="w-8 h-8 text-white" />
                 </div>
-                <h1 className="text-5xl font-bold bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                <h1 className="text-5xl font-bold bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
                   Energy Dashboard
                 </h1>
                 <br /><br />
               </div>
-              <p className="text-xl text-slate-400">Real-time power consumption monitoring & optimization</p>
-              <div className="flex items-center justify-center space-x-2">
-                <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
-                <span className="text-sm text-slate-400">
-                  {isConnected ? 'Connected to sensor' : 'Demo mode - sensor offline'}
-                </span>
-              </div>
+              <p className="text-xl text-slate-600">Real-time power consumption monitoring & optimization</p>
             </div>
 
             {/* Alerts */}
@@ -393,10 +387,10 @@ const Dashboard = () => {
                     key={index}
                     className={`p-4 rounded-2xl backdrop-blur-xl border transition-all duration-300 hover:scale-[1.01] ${
                       alert.type === 'warning'
-                        ? 'bg-red-500/10 border-red-500/30 text-red-300'
+                        ? 'bg-red-100 border-red-300 text-red-700'
                         : alert.type === 'alert'
-                        ? 'bg-amber-500/10 border-amber-500/30 text-amber-300'
-                        : 'bg-blue-500/10 border-blue-500/30 text-blue-300'
+                        ? 'bg-amber-100 border-amber-300 text-amber-700'
+                        : 'bg-blue-100 border-blue-300 text-blue-700'
                     }`}
                   >
                     <div className="flex items-center space-x-3">
@@ -410,45 +404,45 @@ const Dashboard = () => {
 
             {/* Main Metrics - Smaller Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-emerald-500/30 transition-all duration-300">
+              <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 border border-slate-200 hover:border-emerald-300 transition-all duration-300">
                 <div className="flex items-center justify-between mb-2">
-                  <Power className="w-5 h-5 text-emerald-400" />
-                  <span className="text-xs text-slate-400">VOLTAGE</span>
+                  <Power className="w-5 h-5 text-emerald-500" />
+                  <span className="text-xs text-slate-500">VOLTAGE</span>
                 </div>
-                <p className="text-2xl font-bold text-white">{currentReading.voltage.toFixed(1)}<span className="text-sm text-slate-400 ml-1">V</span></p>
+                <p className="text-2xl font-bold text-slate-800">{currentReading.voltage.toFixed(1)}<span className="text-sm text-slate-500 ml-1">V</span></p>
               </div>
 
-              <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-blue-500/30 transition-all duration-300">
+              <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 border border-slate-200 hover:border-blue-300 transition-all duration-300">
                 <div className="flex items-center justify-between mb-2">
-                  <Activity className="w-5 h-5 text-blue-400" />
-                  <span className="text-xs text-slate-400">CURRENT</span>
+                  <Activity className="w-5 h-5 text-blue-500" />
+                  <span className="text-xs text-slate-500">CURRENT</span>
                 </div>
-                <p className="text-2xl font-bold text-white">{currentReading.current.toFixed(2)}<span className="text-sm text-slate-400 ml-1">A</span></p>
+                <p className="text-2xl font-bold text-slate-800">{currentReading.current.toFixed(2)}<span className="text-sm text-slate-500 ml-1">A</span></p>
               </div>
 
-              <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-purple-500/30 transition-all duration-300">
+              <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 border border-slate-200 hover:border-purple-300 transition-all duration-300">
                 <div className="flex items-center justify-between mb-2">
-                  <Zap className="w-5 h-5 text-purple-400" />
-                  <span className="text-xs text-slate-400">POWER</span>
+                  <Zap className="w-5 h-5 text-purple-500" />
+                  <span className="text-xs text-slate-500">POWER</span>
                 </div>
-                <p className="text-2xl font-bold text-white">{currentReading.power.toFixed(0)}<span className="text-sm text-slate-400 ml-1">W</span></p>
+                <p className="text-2xl font-bold text-slate-800">{currentReading.power.toFixed(0)}<span className="text-sm text-slate-500 ml-1">W</span></p>
               </div>
 
-              <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-amber-500/30 transition-all duration-300">
+              <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 border border-slate-200 hover:border-amber-300 transition-all duration-300">
                 <div className="flex items-center justify-between mb-2">
-                  <DollarSign className="w-5 h-5 text-amber-400" />
-                  <span className="text-xs text-slate-400">COST</span>
+                  <DollarSign className="w-5 h-5 text-amber-500" />
+                  <span className="text-xs text-slate-500">COST</span>
                 </div>
-                <p className="text-2xl font-bold text-white">₹{getCurrentPrediction().toFixed(0)}</p>
+                <p className="text-2xl font-bold text-slate-800">₹{getCurrentPrediction().toFixed(0)}</p>
               </div>
             </div>
 
             {/* Bill Prediction Card */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10">
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
                 <div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Bill Prediction</h3>
-                  <p className="text-slate-400">Based on current consumption patterns</p>
+                  <h3 className="text-2xl font-bold text-slate-800 mb-2">Bill Prediction</h3>
+                  <p className="text-slate-600">Based on current consumption patterns</p>
                 </div>
                 <div className="flex space-x-2 mt-4 md:mt-0">
                   {['daily', 'weekly', 'monthly'].map((period) => (
@@ -457,8 +451,8 @@ const Dashboard = () => {
                       onClick={() => setSelectedTimeFrame(period)}
                       className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
                         selectedTimeFrame === period
-                          ? 'bg-gradient-to-r from-emerald-500 to-blue-500 text-white'
-                          : 'bg-white/10 text-slate-400 hover:bg-white/20'
+                          ? 'bg-gradient-to-r from-emerald-400 to-blue-400 text-white'
+                          : 'bg-slate-200 text-slate-600 hover:bg-slate-300'
                       }`}
                     >
                       {period.charAt(0).toUpperCase() + period.slice(1)}
@@ -467,18 +461,18 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="text-center">
-                <p className="text-6xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                <p className="text-6xl font-bold bg-gradient-to-r from-emerald-500 to-blue-500 bg-clip-text text-transparent">
                   ₹{getCurrentPrediction().toFixed(2)}
                 </p>
-                <p className="text-xl text-slate-400 mt-2">Estimated {selectedTimeFrame} bill</p>
+                <p className="text-xl text-slate-600 mt-2">Estimated {selectedTimeFrame} bill</p>
               </div>
             </div>
 
             {/* Large Charts Grid */}
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
               {/* Power Consumption Chart */}
-              <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10">
-                <h3 className="text-2xl font-bold text-white mb-6">Power Consumption Timeline</h3>
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200">
+                <h3 className="text-2xl font-bold text-slate-800 mb-6">Power Consumption Timeline</h3>
                 <div className="h-96">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={getChartData()}>
@@ -488,10 +482,10 @@ const Dashboard = () => {
                           <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
                       <XAxis 
                         dataKey="time" 
-                        stroke="#9ca3af" 
+                        stroke="#6b7280" 
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -499,7 +493,7 @@ const Dashboard = () => {
                         minTickGap={30}
                       />
                       <YAxis 
-                        stroke="#9ca3af" 
+                        stroke="#6b7280" 
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -508,10 +502,10 @@ const Dashboard = () => {
                       />
                       <Tooltip 
                         contentStyle={{ 
-                          backgroundColor: 'rgba(0,0,0,0.8)', 
-                          border: '1px solid rgba(255,255,255,0.1)',
+                          backgroundColor: 'rgba(255,255,255,0.9)', 
+                          border: '1px solid rgba(0,0,0,0.1)',
                           borderRadius: '12px',
-                          color: '#fff'
+                          color: '#1f2937'
                         }}
                         formatter={(value) => [`${value.toFixed(2)} W`, 'Power']}
                         labelFormatter={(label) => `Time: ${label}`}
@@ -532,15 +526,15 @@ const Dashboard = () => {
               </div>
 
               {/* Multi-parameter Chart */}
-              <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10">
-                <h3 className="text-2xl font-bold text-white mb-6">Real-time Parameters</h3>
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200">
+                <h3 className="text-2xl font-bold text-slate-800 mb-6">Real-time Parameters</h3>
                 <div className="h-96">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={getChartData()}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
                       <XAxis 
                         dataKey="time" 
-                        stroke="#9ca3af" 
+                        stroke="#6b7280" 
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -548,7 +542,7 @@ const Dashboard = () => {
                         minTickGap={30}
                       />
                       <YAxis 
-                        stroke="#9ca3af" 
+                        stroke="#6b7280" 
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -557,10 +551,10 @@ const Dashboard = () => {
                       />
                       <Tooltip 
                         contentStyle={{ 
-                          backgroundColor: 'rgba(0,0,0,0.8)', 
-                          border: '1px solid rgba(255,255,255,0.1)',
+                          backgroundColor: 'rgba(255,255,255,0.9)', 
+                          border: '1px solid rgba(0,0,0,0.1)',
                           borderRadius: '12px',
-                          color: '#fff'
+                          color: '#1f2937'
                         }}
                         formatter={(value, name) => {
                           const unit = name === 'voltage' ? 'V' : name === 'current' ? 'A' : 'W';
@@ -593,8 +587,8 @@ const Dashboard = () => {
               </div>
 
               {/* Distribution Chart */}
-              <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10">
-                <h3 className="text-2xl font-bold text-white mb-6">Power Distribution</h3>
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200">
+                <h3 className="text-2xl font-bold text-slate-800 mb-6">Power Distribution</h3>
                 <div className="h-96">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -614,10 +608,10 @@ const Dashboard = () => {
                       </Pie>
                       <Tooltip 
                         contentStyle={{ 
-                          backgroundColor: 'rgba(0,0,0,0.8)', 
-                          border: '1px solid rgba(255,255,255,0.1)',
+                          backgroundColor: 'rgba(255,255,255,0.9)', 
+                          border: '1px solid rgba(0,0,0,0.1)',
                           borderRadius: '12px',
-                          color: '#fff'
+                          color: '#1f2937'
                         }}
                         formatter={(value) => `${value.toFixed(2)} W`}
                       />
@@ -628,15 +622,15 @@ const Dashboard = () => {
               </div>
 
               {/* Hourly Consumption Bar Chart */}
-              <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10">
-                <h3 className="text-2xl font-bold text-white mb-6">Hourly Consumption</h3>
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200">
+                <h3 className="text-2xl font-bold text-slate-800 mb-6">Hourly Consumption</h3>
                 <div className="h-96">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={getChartData()}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
                       <XAxis 
                         dataKey="time" 
-                        stroke="#9ca3af" 
+                        stroke="#6b7280" 
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -644,7 +638,7 @@ const Dashboard = () => {
                         minTickGap={30}
                       />
                       <YAxis 
-                        stroke="#9ca3af" 
+                        stroke="#6b7280" 
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -653,10 +647,10 @@ const Dashboard = () => {
                       />
                       <Tooltip 
                         contentStyle={{ 
-                          backgroundColor: 'rgba(0,0,0,0.8)', 
-                          border: '1px solid rgba(255,255,255,0.1)',
+                          backgroundColor: 'rgba(255,255,255,0.9)', 
+                          border: '1px solid rgba(0,0,0,0.1)',
                           borderRadius: '12px',
-                          color: '#fff'
+                          color: '#1f2937'
                         }}
                         formatter={(value) => [`${value.toFixed(2)} W`, 'Power']}
                         labelFormatter={(label) => `Time: ${label}`}
@@ -679,14 +673,14 @@ const Dashboard = () => {
             </div>
 
             {/* Energy Saving Tips */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10">
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-emerald-500 to-blue-500 bg-clip-text text-transparent">
                   Energy Saving Tips
                 </h2>
                 <button
                   onClick={() => setShowTips(!showTips)}
-                  className="flex items-center space-x-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-blue-500 text-white font-medium hover:from-emerald-600 hover:to-blue-600 transition-all duration-300"
+                  className="flex items-center space-x-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-blue-400 text-white font-medium hover:from-emerald-500 hover:to-blue-500 transition-all duration-300"
                 >
                   {showTips ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   <span>{showTips ? 'Hide Tips' : 'Show Tips'}</span>
@@ -698,11 +692,11 @@ const Dashboard = () => {
                   {energyTips.map((tip, index) => (
                     <div
                       key={index}
-                      className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105"
+                      className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:scale-105"
                     >
                       <div className="mb-4">{tip.icon}</div>
-                      <h3 className="text-xl font-semibold text-white mb-2">{tip.title}</h3>
-                      <p className="text-slate-400">{tip.description}</p>
+                      <h3 className="text-xl font-semibold text-slate-800 mb-2">{tip.title}</h3>
+                      <p className="text-slate-600">{tip.description}</p>
                     </div>
                   ))}
                 </div>
@@ -710,22 +704,22 @@ const Dashboard = () => {
             </div>
 
             {/* Recent Readings Table */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10">
-              <h2 className="text-2xl font-bold text-white mb-6">Recent Readings</h2>
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200">
+              <h2 className="text-2xl font-bold text-slate-800 mb-6">Recent Readings</h2>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-white/10">
-                      <th className="text-left py-4 px-4 text-slate-400 font-medium">Time</th>
-                      <th className="text-left py-4 px-4 text-slate-400 font-medium">Voltage (V)</th>
-                      <th className="text-left py-4 px-4 text-slate-400 font-medium">Current (A)</th>
-                      <th className="text-left py-4 px-4 text-slate-400 font-medium">Power (W)</th>
+                    <tr className="border-b border-slate-200">
+                      <th className="text-left py-4 px-4 text-slate-500 font-medium">Time</th>
+                      <th className="text-left py-4 px-4 text-slate-500 font-medium">Voltage (V)</th>
+                      <th className="text-left py-4 px-4 text-slate-500 font-medium">Current (A)</th>
+                      <th className="text-left py-4 px-4 text-slate-500 font-medium">Power (W)</th>
                     </tr>
                   </thead>
                   <tbody>
                     {getRecentReadings().map((reading, index) => (
-                      <tr key={index} className="border-b border-white/5 hover:bg-white/5 transition-all duration-200">
-                        <td className="py-4 px-4 text-white">
+                      <tr key={index} className="border-b border-slate-100 hover:bg-slate-50 transition-all duration-200">
+                        <td className="py-4 px-4 text-slate-800">
                           {new Date(reading.timestamp).toLocaleTimeString('en-IN', {
                             hour: '2-digit',
                             minute: '2-digit',
@@ -734,13 +728,13 @@ const Dashboard = () => {
                             timeZone: 'Asia/Kolkata'
                           })}
                         </td>
-                        <td className="py-4 px-4 text-emerald-400 font-medium">
+                        <td className="py-4 px-4 text-emerald-600 font-medium">
                           {reading.voltage.toFixed(2)}
                         </td>
-                        <td className="py-4 px-4 text-blue-400 font-medium">
+                        <td className="py-4 px-4 text-blue-600 font-medium">
                           {reading.current.toFixed(2)}
                         </td>
-                        <td className="py-4 px-4 text-purple-400 font-medium">
+                        <td className="py-4 px-4 text-purple-600 font-medium">
                           {reading.power.toFixed(2)}
                         </td>
                       </tr>

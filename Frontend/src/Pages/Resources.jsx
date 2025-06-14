@@ -278,6 +278,7 @@ const Resources = () => {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
+          <br /> <br />
           <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-blue-500 to-purple-500">
             Resources
           </h1>
